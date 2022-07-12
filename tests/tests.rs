@@ -14,14 +14,14 @@ fn benchtest()
     // even though only the last two require it.
     // The Rust compiler would throw a fit otherwise.
     let closures = [
-        |v:&mut [u8]| { v.sortm(true); }, 
-        |v:&mut [u8]| { v.sorth(true); }, 
-        |v:&mut [u8]| { v.mergesort_indexed(); },
-        |v:&mut [u8]| { v.hashsort_indexed(); },
-        |v:&mut [u8]| { v.muthashsort(); },
-        |v:&mut [u8]| { v.mutsort(); } ];
+        |v:&mut [f64]| { v.sortm(true); }, 
+        |v:&mut [f64]| { v.sorth(true); }, 
+        |v:&mut [f64]| { v.mergesort_indexed(); },
+        |v:&mut [f64]| { v.hashsort_indexed(); },
+        |v:&mut [f64]| { v.muthashsort(); },
+        |v:&mut [f64]| { v.mutsort(); } ];
 
     set_seeds(7777777777_u64);   // intialise random numbers generator
-    let rn = Rnum::newu8(); // specifies the type of data items
+    let rn = Rnum::newf64(); // specifies the type of data items
     bench(rn,5,10,&NAMES,&closures); 
 }

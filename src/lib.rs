@@ -1,15 +1,8 @@
 #![warn(missing_docs)]
 //! Benchmark for timing algorithms
-use devtimer::{DevTime,SimpleTimer};
+use devtimer::{DevTime};
 use indxvec::{ Indices, printing::*, Vecops };
 use ran::*;
-
-fn onetest<F>(alg: F, v:&mut[u8], timer:&mut SimpleTimer) -> u128 
-    where F: Fn(&mut[u8]) {
-    timer.start();  alg(v);  timer.stop();
-    timer.time_in_nanos().unwrap()    
-}
-
 
 /// Repeated tests on vectors of magnitudes steps in length, e.g. 10,100,1000  
 /// Time n runs of listed closures, identified by names,
@@ -20,7 +13,7 @@ pub fn bench<F>(
     magnitudes:usize,
     repeats:usize,
     names:&[&str],
-    closures:&[F]) where F: Fn(&mut[u8]) {
+    closures:&[F]) where F: Fn(&mut[f64]) {
 
     let algno = names.len();
     let rint = repeats as u128;
@@ -36,12 +29,13 @@ pub fn bench<F>(
         let mut timessq = vec![0_u128;algno]; 
 
         for _ in 0..repeats {
-            let vd = rn.ranv(d).getvu8(); // Vec with random data 
+            let vd = rn.ranv(d).getvf64(); // Vec with random data 
             for (i,closure) in closures.iter().enumerate() { 
                 // make a fresh copy, in case the mutable data was changed
-                let mut v = vd.clone();  
-                let this_time = onetest(closure,&mut v,&mut timer); 
-                times[i] += this_time;
+                let mut v = vd.clone();
+                timer.start();  closure(&mut v);  timer.stop();                    
+                let this_time = timer.time_in_nanos().unwrap();
+                times[i] += this_time; 
                 timessq[i] += this_time*this_time;            
            } 
         }
@@ -52,7 +46,7 @@ pub fn bench<F>(
         let timessq_sorted = timesx.unindex(&timessq,true);
         
         for i in 0..names.len() {
-            println!("{:18}{GR}{:>6.0} ± {:>6.0}{UN}",names_sorted[i],times_sorted[i]/rint,
+            println!("{MG}{:<18}{GR}{:>10.0} ± {:>8.0}{UN}",names_sorted[i],times_sorted[i]/rint,
             (((timessq_sorted[i]-times_sorted[i]*times_sorted[i]/rint)/rint) as f64).sqrt()); 
         } 
     }

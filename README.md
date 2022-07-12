@@ -38,4 +38,6 @@ The algorithms are automatically sorted by their execution times, separately wit
 
 ## Conclusion
 
+Future work: make it easier to change the end data_type. At the moment it is possible but it requires changing the hard-wired type in several places in the code (possibly with search-replace.) 
+
 Please see `tests/tests.rs` for an example application. From the benchmark we conclude, that the fastest standard Rust destructive sort, named here `mutsort`, is indeed the best for up to about 100 items. Then all three versions fo my `hashsort` overtake it. The merit order of the algorithms then remains fixed from about 1000 upwards.
