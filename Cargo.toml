@@ -1,0 +1,27 @@
+[package]
+name = "times"
+version = "0.1.0"
+authors = ["Libor Spacek"]
+edition = "2021"
+description = "Timing Benchmark, Repeated Runs, with Statistics"
+readme = "README.md"
+homepage = "https://github.com/liborty/times"
+repository = "https://github.com/liborty/times"
+license = "BSD-3-Clause"
+keywords = ["statistics","median"]
+categories = ["development-tools","development-tools::profiling","rust-patterns","algorithms","science"]
+include = [
+    "src/*.rs",
+    "tests/*.rs",
+    "Cargo.toml",
+    "README.md",
+    "LICENSE"
+]
+[badges]
+maintenance = { status = "actively-developed" }
+[lib]
+[dependencies]
+indxvec = "^1"
+devtimer = "^4"
+ran = "^0"
+#ran = {path = "../random"}
