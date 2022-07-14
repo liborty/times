@@ -4,24 +4,42 @@
 use indxvec::{ here, F64, printing::*, Indices, Printing, Vecops, Mutops};
 use ran::*;
 use std::convert::From;
-use times::bench;
+use times::{benchu8,benchu64,benchf64};
+
+const NAMES:[&str;6] = [ "sortm","sorth","mergesort_indexed","hashsort_indexed","muthashsort","mutsort" ];
 
 #[test]
-fn benchtest()
-{ 
-    const NAMES:[&str;6] = [ "sortm","sorth","mergesort_indexed","hashsort_indexed","muthashsort","mutsort" ];
-    // Here we found it necessary to declare the data argument v as mutable in all closures,
-    // even though only the last two require it.
-    // The Rust compiler would throw a fit otherwise.
-    let closures = [
-        |v:&mut [f64]| { v.sortm(true); }, 
-        |v:&mut [f64]| { v.sorth(true); }, 
-        |v:&mut [f64]| { v.mergesort_indexed(); },
-        |v:&mut [f64]| { v.hashsort_indexed(); },
-        |v:&mut [f64]| { v.muthashsort(); },
-        |v:&mut [f64]| { v.mutsort(); } ];
+fn benchtests() {
+    set_seeds(7777777777_u64);   // intialise random numbers generator
+
+    let closuresu8 = [
+        |v:&mut[_]| { v.sortm(true); }, 
+        |v:&mut[_]| { v.sorth(true); }, 
+        |v:&mut[_]| { v.mergesort_indexed(); },
+        |v:&mut[_]| { v.hashsort_indexed(); },
+        |v:&mut[_]| { v.muthashsort(); },
+        |v:&mut[_]| { v.mutsort(); } ];
+    benchu8(Rnum::newu8(),5,10,&NAMES,&closuresu8); 
+
+    let closuresu64 = [
+        |v:&mut[_]| { v.sortm(true); }, 
+        |v:&mut[_]| { v.sorth(true); }, 
+        |v:&mut[_]| { v.mergesort_indexed(); },
+        |v:&mut[_]| { v.hashsort_indexed(); },
+        |v:&mut[_]| { v.muthashsort(); },
+        |v:&mut[_]| { v.mutsort(); } ];
+    // Rnum encapsulates the type of the data items
+    benchu64(Rnum::newu64(),5,10,&NAMES,&closuresu64); 
+
+    let closuresf64 = [
+        |v:&mut[_]| { v.sortm(true); }, 
+        |v:&mut[_]| { v.sorth(true); }, 
+        |v:&mut[_]| { v.mergesort_indexed(); },
+        |v:&mut[_]| { v.hashsort_indexed(); },
+        |v:&mut[_]| { v.muthashsort(); },
+        |v:&mut[_]| { v.mutsort(); } ];
 
     set_seeds(7777777777_u64);   // intialise random numbers generator
-    let rn = Rnum::newf64(); // specifies the type of data items
-    bench(rn,5,10,&NAMES,&closures); 
+    // Rnum encapsulates the type of the data items
+    benchf64(Rnum::newf64(),5,10,&NAMES,&closuresf64); 
 }
