@@ -4,7 +4,7 @@
 use indxvec::{ here, F64, printing::*, Indices, Printing, Vecops, Mutops};
 use ran::*;
 use std::convert::From;
-use times::{benchu8,benchu64,benchf64};
+use times::{mutbenchu8,mutbenchu64,mutbenchf64};
 
 const NAMES:[&str;6] = [ "sortm","sorth","mergesort_indexed","hashsort_indexed","muthashsort","mutsort" ];
 
@@ -36,7 +36,7 @@ const CLOSURESF64:[fn(&mut[f64]);6] = [
 fn benchtests() {
     set_seeds(7777777777_u64);   // intialise random numbers generator
      // Rnum encapsulates the type of the data items
-    benchu8(Rnum::newu8(),5,10,&NAMES,&CLOSURESU8); 
-    benchu64(Rnum::newu64(),5,10,&NAMES,&CLOSUREU64); 
-    benchf64(Rnum::newf64(),5,10,&NAMES,&CLOSURESF64); 
+    mutbenchu8(Rnum::newu8(),5,10,&NAMES,&CLOSURESU8); 
+    mutbenchu64(Rnum::newu64(),5,10,&NAMES,&CLOSUREU64); 
+    mutbenchf64(Rnum::newf64(),5,10,&NAMES,&CLOSURESF64); 
 }

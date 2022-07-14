@@ -36,7 +36,7 @@ The tests are also automatically repeated over different lengths of the input da
 
 The algorithms are automatically sorted by their execution times, separately within each magnitude of data category. In other words, the fastest algorithm in each data category will be always listed first and the slowest last.
 
-So far here are three functions implemented for testing algorithms on three end-types of data: `benchu8, benchu64, benchf64`.
+So far here are three functions implemented for testing algorithms on three end-types of data: `benchu8, benchu64, benchf64`. Plus their mutable versions for testing mutable algorithms: `mutbenchu8, mutbenchu64, mutbenchf64`
 
 This can be extended just by copying the code of one of these functions and changing the concrete type therein.
 
