@@ -43,3 +43,9 @@ This can be extended just by copying the code of one of these functions and chan
 ## Conclusion
 
 Please see `tests/tests.rs` for an example application. From the benchmarks we conclude that the fastest standard Rust destructive sort, named here `mutsort`, is indeed the fastest but only up to about 100 items to be sorted. Then all three versions of my `hashsort` overtake it. The merit order of the algorithms then remains fixed from about 1000 upwards.
+
+## Appendix - Recent Releases
+
+**Version 0.1.4** Added `benchvvu8` for closures acting on (unmutable) `Vec<Vec<u8>>` and similarly `benchvvf64` for `Vec<Vec<f64>>`.
+
+**Version 0.1.3** Benchmark functions for `Vec` data types: u8,u64,f64, in plain and mutable varieties.
