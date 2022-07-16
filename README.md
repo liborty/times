@@ -45,7 +45,7 @@ A word of warning: it is not recommended to set the magnitudes range to more tha
 
 * Mutable versions for testing mutable algorithms: `mutbenchu8, mutbenchu64, mutbenchf64`. A mutable version has to be used even when just one of the tested algorithms mutates its input.
 
- * Versions for algorithms working on n-dimensional data (matrices): `benchvvu8, benchvvu64 and benchvvf64`.
+* Versions for algorithms working on n-dimensional data (matrices): `benchvvu8, benchvvu64 and benchvvf64`.
 
  Other end-types may be included later.
 
