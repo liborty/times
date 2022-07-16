@@ -259,12 +259,12 @@ pub fn benchvvu8(
     let algno = names.len();
     let mut timer = DevTime::new_simple();
 
-    println!("\n{YL}Nanoseconds of {BL}{}{YL} algorithms, {BL}&[Vec<u8>]{YL} data, {BL}{}{YL} magnitudes, {BL}{}{YL} points, {BL}{}{YL} repeats:{UN}",
+    println!("\n{YL}Nanoseconds of {BL}{}{YL} algorithms, {BL}&[Vec<u8>]{YL} data, {BL}{}{YL} points, {BL}{}{YL} magnitudes, {BL}{}{YL} repeats:{UN}",
         algno,points,magnitudes,repeats );  
  
     for mag in 1..magnitudes+1 {  
         let d = 10_usize.pow(mag as u32);
-        println!("\nDimensions: {BL}{}{UN}\n",d);
+        println!("\nPoints: {BL}{}{UN} Dimensions: {BL}{}{UN}\n",points,d);
         let mut times = vec![0_u128;algno];
         let mut timessq = vec![0_u128;algno];
         for _ in 0..repeats {
@@ -297,12 +297,12 @@ pub fn benchvvf64(
     let algno = names.len();
     let mut timer = DevTime::new_simple();
 
-    println!("\n{YL}Nanoseconds of {BL}{}{YL} algorithms, {BL}&[Vec<f64>]{YL} data, {BL}{}{YL} magnitudes, {BL}{}{YL} points, {BL}{}{YL} repeats:{UN}",
+    println!("\n{YL}Nanoseconds of {BL}{}{YL} algorithms, {BL}&[Vec<f64>]{YL} data, {BL}{}{YL} points, {BL}{}{YL} magnitudes, {BL}{}{YL} repeats:{UN}",
         algno,points,magnitudes,repeats ); 
 
     for mag in 1..magnitudes+1 {  
         let d = 10_usize.pow(mag as u32);
-        println!("\nDimensions: {BL}{}{UN}\n",d); 
+        println!("\nPoints: {BL}{}{UN} Dimensions: {BL}{}{UN}\n",points,d); 
         let mut times = vec![0_u128;algno];
         let mut timessq = vec![0_u128;algno];
         for _ in 0..repeats {
@@ -335,12 +335,12 @@ pub fn benchvvu64(
     let algno = names.len();
     let mut timer = DevTime::new_simple();
 
-    println!("\n{YL}Nanoseconds of {BL}{}{YL} algorithms, {BL}&[Vec<f64>]{YL} data, {BL}{}{YL} magnitudes, {BL}{}{YL} points, {BL}{}{YL} repeats:{UN}",
+    println!("\n{YL}Nanoseconds of {BL}{}{YL} algorithms, {BL}&[Vec<f64>]{YL} data, {BL}{}{YL} points, {BL}{}{YL} magnitudes, {BL}{}{YL} repeats:{UN}",
         algno,points,magnitudes,repeats ); 
 
     for mag in 1..magnitudes+1 {  
         let d = 10_usize.pow(mag as u32);
-        println!("\nDimensions: {BL}{}{UN}\n",d); 
+        println!("\nPoints: {BL}{}{UN} Dimensions: {BL}{}{UN}\n",points,d); 
         let mut times = vec![0_u128;algno];
         let mut timessq = vec![0_u128;algno];
         for _ in 0..repeats {

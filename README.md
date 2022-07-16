@@ -57,6 +57,8 @@ These benchmarks show that the fastest standard Rust destructive sort, labelled 
 
 ## Appendix - Recent Releases
 
+**Version 0.1.6** Corrected a minor bug in report headline.
+
 **Version 0.1.5** Corrected the report headlines. Introduced standard errors. Added `benchvvu64`.
 
 **Version 0.1.4** Added `benchvvu8` for closures acting on (immutable) `Vec<Vec<u8>>` and similarly `benchvvf64` for `Vec<Vec<f64>>`.
