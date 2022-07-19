@@ -20,13 +20,13 @@ should be tested separately. Here the results are thrown away and only the execu
 
 Random data are automatically generated using `ran` crate and then algorithms from a given array of closures are repeatedly run and their statistics are collected (arithmetic mean of the execution *times* and its standard error). The repeated runs  average out the temporary effects of changing machine load and changing data. All the algorithms are run over the same data but the data is changed for each repeat run.
 
-Standard error (`ste`) estimates the doubt about the accuracy of any (repeated) measurements. Thus high `ste` means poor accuracy. Accuracy can generally be increased  by increasing the number of repeats. Here the extraneous influence of the machine load is also reduced as the length of the data vectors increases.
+Standard error `(ste)` estimates the doubt about the accuracy of any (repeated) measurements. Thus high `ste` means poor accuracy. Accuracy can often be increased by increasing the number of repeats. The extraneous influence of the machine load is also reduced as the length of the data vectors increases.
 
-We generate new random data for each repeated run, so the differences in `ste` between algorithms inform us about the their relative stability under changing data. Some algorithms can suffer from data sensitivity (poor worst-case performance) and this may be indicated by relatively high `ste`.
+We generate new random data for each repeated run. The differences in `ste` between algorithms inform us about their relative stability under changing data. Some algorithms suffer from data sensitivity (poor worst-case performance) and this may be indicated by relatively high `ste`.
 
-The tests are also automatically repeated over different lengths of the input data vectors, in steps of their *orders of magnitude*: 10,100,1000,10000, etc. This is to enable comparisons of the algorithms' rankings of merit, as the difficulty of the problem increases. The algorithms with lower computational complexity and/or faster implementations will start convincingly winning. 
+The tests are also automatically repeated over different lengths of the input data vectors, in steps of their *orders of magnitude*: 10,100,1000,10000, etc. This enables comparisons of algorithms as the difficulty of the problem increases. The algorithms with lower computational complexity and/or faster implementations will start to win more convincingly at greater magnitudes.
 
-A word of warning: it is not recommended to set the magnitudes range to more than 5, as it may take a long time to run and the process may have to be externally terminated. Depending, of course, on the algorithms and the speed of the machine.
+A word of warning: it is not recommended to set the magnitudes range to more than 5, as it may take a long time to run. Then the process may have to be externally terminated. Depending, of course, on the algorithms and the speed of the machine.
 
 ## Main Features
 
@@ -37,11 +37,13 @@ A word of warning: it is not recommended to set the magnitudes range to more tha
   * some labels/names to identify the algorithms by
   * the closures invoking the algorithms (in the same order as their labels).
 
-* Sorted output. The algorithms are automatically sorted by their execution times within each magnitude of data category. In other words, the fastest algorithm in each data category will be listed first and the slowest last.
+* Sorted output.
+
+    The algorithms are automatically sorted by their execution times within each magnitude of data category, i.e. the fastest algorithm in each data category will be listed first and the slowest last.
 
 ## Provided Testing Functions
 
-* Functions for testing algorithms on vectors of three different end-types of data: `benchu8, benchu64, benchf64`. 
+* Functions for testing algorithms on vectors of three different end-types of data: `benchu8, benchu64, benchf64`.
 
 * Mutable versions for testing mutable algorithms: `mutbenchu8, mutbenchu64, mutbenchf64`. A mutable version has to be used even when just one of the tested algorithms mutates its input.
 
@@ -53,7 +55,7 @@ A word of warning: it is not recommended to set the magnitudes range to more tha
 
 Please see `tests/test.rs` for examples of how to specify the closures and call these functions on them.
 
-These benchmarks show that the fastest standard Rust destructive sort, labelled as `mutsort` here, is indeed the fastest but only up to about 100 sort items. Then all three versions of my `hashsort` overtake it.
+These tests show that the fastest standard Rust destructive sort, (labelled as `mutsort`), is indeed the fastest but only up to about 100 sort items. Then all three versions of my `hashsort` overtake it.
 
 ## Appendix - Recent Releases
 
