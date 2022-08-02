@@ -55,9 +55,9 @@ A word of warning: it is not recommended to set the magnitudes range to more tha
 
 Please see `tests/test.rs` for examples of how to specify the closures and call these functions on them.
 
-These tests show that the fastest standard Rust destructive sort, (labelled as `mutsort`), is indeed the fastest but only up to about 100 sort items. Then all three versions of my `hashsort` overtake it.
-
 ## Appendix - Recent Releases
+
+**Version 1.0.0** Promoted to v 1.0.0 following a period of non problematic use.
 
 **Version 0.1.6** Corrected a minor bug in report headline.
 

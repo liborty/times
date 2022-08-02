@@ -1,3 +1,6 @@
+//! These tests compare sort algorithms implemented in crate `indxvec`
+//! and demonstrate that our `muthashsort` is generally faster than the best Rust
+//! `sort_unstable_by` for more than the order of 10 sort items.
 #![allow(unused_imports)]
 #![allow(dead_code)]
 #[cfg(test)]
