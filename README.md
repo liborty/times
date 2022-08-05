@@ -18,17 +18,17 @@ This crate will be typically added in `Cargo.toml` under `[dev-dependecies]`  an
 Is suitable for testing algorithms that work on a whole `Vec` of data, for example sort. The correctness of the results
 should be tested separately. Here the results are thrown away and only the execution time is measured.
 
-Random data are automatically generated using `ran` crate and then algorithms from a given array of closures are repeatedly run and their statistics are collected (arithmetic mean of the execution *times* and its standard error). The repeated runs  average out the temporary effects of changing machine load and changing data. All the algorithms are run over the same data but the data is changed for each repeat run.
+Random data are automatically generated using `ran` crate and then algorithms from a given array of closures are repeatedly run and their statistics are collected (median of the execution *times* and its standard error). The repeated runs reduce the temporary effects of changing machine load and changing data. The effects of outliers are minimised by using medians and MAD (median of absolute differences, i.e. the most stable measure of data dispersion). All the algorithms are run over the same data but the data is changed for each repeat run.
 
-Standard error `(ste)` estimates the doubt about the accuracy of any (repeated) measurements. Thus high `ste` means poor accuracy. Accuracy can often be increased by increasing the number of repeats. The extraneous influence of the machine load is also reduced as the length of the data vectors increases.
+Standard error `(ste)` estimates the doubt about the accuracy of any (repeated) measurements. Thus high `ste` means poor accuracy. Accuracy can often be increased by increasing the number of repeats. The extraneous influence of the machine load is also reduced as the length of the data vectors increases. We redefine `ste` here for extra stability as MAD as a percentage of the median.
 
-We generate new random data for each repeated run. The differences in `ste` between algorithms inform us about their relative stability under changing data. Some algorithms suffer from data sensitivity (poor worst-case performance) and this may be indicated by relatively high `ste`.
+We generate new random data for each repeated run. The differences in `ste` between algorithms inform us about their relative stability under changing data. Some algorithms suffer from data sensitivity (poor worst-case performance) and this may be indicated by relatively high `ste`, e.g. `mutsort`.
 
-The tests are also automatically repeated over different lengths of the input data vectors, in steps of their *orders of magnitude*: 10,100,1000,10000, etc. This enables comparisons of algorithms as the difficulty of the problem increases. The algorithms with lower computational complexity and/or faster implementations will start to win more convincingly at greater magnitudes.
-
-A word of warning: it is not recommended to set the magnitudes range to more than 5, as it may take a long time to run. Then the process may have to be externally terminated. Depending, of course, on the algorithms and the speed of the machine.
+The tests are also automatically repeated over different lengths of the input data vectors, in steps of their *orders of magnitude*: 10,100,1000,10000, etc. This enables comparisons of algorithms as the difficulty of the problem increases. The algorithms with lower computational complexity and/or faster implementations will start to win more convincingly at greater magnitudes. A word of warning: it is not recommended to set the magnitudes range to more than 5, as it may take a very long time to run. Then the process may have to be externally terminated. Depending, of course, on the algorithms and the speed of the machine.
 
 ## Main Features
+
+* Redefined, more stable standard error.
 
 * Ease of Use - just specify:
   * the type of the random test data,
@@ -56,6 +56,8 @@ A word of warning: it is not recommended to set the magnitudes range to more tha
 Please see `tests/test.rs` for examples of how to specify the closures and call these functions on them.
 
 ## Appendix - Recent Releases
+
+**Version 1.0.1** Redefined standard error as MAD as a percentage of Median (more stable). All listed times are now medians rather than means. As there are now no sums of squares of nanoseconds, the danger of overflow on very slow tests is reduced.
 
 **Version 1.0.0** Promoted to v 1.0.0 following a period of non problematic use.
 

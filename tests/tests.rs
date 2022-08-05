@@ -9,7 +9,7 @@ use ran::*;
 use std::convert::From;
 use times::{mutbenchu8,mutbenchu64,mutbenchf64};
 
-const NAMES:[&str;6] = [ "sortm","sorth","mergesort_indexed","hashsort_indexed","muthashsort","mutsort" ];
+const NAMES:[&str;6] = [ "sortm","sorth","mergesort_indexed","hashsort_indexed","muthashsort","mutrustsort" ];
 
 const CLOSURESU8:[fn(&mut[u8]);6] = [
     |v:&mut[_]| { v.sortm(true); }, 
@@ -17,7 +17,7 @@ const CLOSURESU8:[fn(&mut[u8]);6] = [
     |v:&mut[_]| { v.mergesort_indexed(); },
     |v:&mut[_]| { v.hashsort_indexed(); },
     |v:&mut[_]| { v.muthashsort(); },
-    |v:&mut[_]| { v.mutsort(); } ];
+    |v:&mut[_]| { v.mutquicksort(); } ];
 
 const CLOSUREU64:[fn(&mut[u64]);6] = [
     |v:&mut[_]| { v.sortm(true); }, 
@@ -25,7 +25,7 @@ const CLOSUREU64:[fn(&mut[u64]);6] = [
     |v:&mut[_]| { v.mergesort_indexed(); },
     |v:&mut[_]| { v.hashsort_indexed(); },
     |v:&mut[_]| { v.muthashsort(); },
-    |v:&mut[_]| { v.mutsort(); } ];
+    |v:&mut[_]| { v.mutquicksort(); } ];
 
 const CLOSURESF64:[fn(&mut[f64]);6] = [
     |v:&mut[_]| { v.sortm(true); }, 
@@ -33,7 +33,7 @@ const CLOSURESF64:[fn(&mut[f64]);6] = [
     |v:&mut[_]| { v.mergesort_indexed(); },
     |v:&mut[_]| { v.hashsort_indexed(); },
     |v:&mut[_]| { v.muthashsort(); },
-    |v:&mut[_]| { v.mutsort(); } ];
+    |v:&mut[_]| { v.mutquicksort(); } ];
 
 #[test]
 fn benchtests() {
