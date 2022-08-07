@@ -43,11 +43,13 @@ The tests are also automatically repeated over different lengths of the input da
 
 ## Provided Testing Functions
 
-* Functions for testing algorithms on vectors of three different end-types of data: `benchu8, benchu64, benchf64`.
+* Simple function `bench` for timing closures that take no or constant arguments (see `tests/tests.rs`).
 
-* Mutable versions for testing mutable algorithms: `mutbenchu8, mutbenchu64, mutbenchf64`. A mutable version has to be used even when just one of the tested algorithms mutates its input.
+* Functions for testing algorithms on input vectors of three different end-types of data: `benchu8, benchu64, benchf64`.
 
-* Versions for algorithms working on n-dimensional data (matrices): `benchvvu8, benchvvu64 and benchvvf64`.
+* Mutable versions for testing mutable algorithms: `mutbenchu8, mutbenchu64, mutbenchf64`. A mutable version has to be used whenever one of the tested algorithms mutates its input.
+
+* Versions for algorithms working on nd data (matrices): `benchvvu8, benchvvu64 and benchvvf64`.
 
  Other end-types may be included later.
 
@@ -57,14 +59,8 @@ Please see `tests/test.rs` for examples of how to specify the closures and call 
 
 ## Appendix - Recent Releases
 
-**Version 1.0.1** Redefined standard error as MAD as a percentage of Median (more stable). All listed times are now medians rather than means. As there are now no sums of squares of nanoseconds, the danger of overflow on very slow tests is reduced.
+**Version 1.0.2** Added simple `bench` for timing closures that take no or constant arguments.
 
-**Version 1.0.0** Promoted to v 1.0.0 following a period of non problematic use.
+**Version 1.0.1** Redefined standard error as MAD as a percentage of Median (more stable measure). All listed times are now medians rather than means. Also, as there are now no sums of squares of nanoseconds, the danger of overflow on very slow tests is reduced.
 
-**Version 0.1.6** Corrected a minor bug in report headline.
-
-**Version 0.1.5** Corrected the report headlines. Introduced standard errors. Added `benchvvu64`.
-
-**Version 0.1.4** Added `benchvvu8` for closures acting on (immutable) `Vec<Vec<u8>>` and similarly `benchvvf64` for `Vec<Vec<f64>>`.
-
-**Version 0.1.3** Benchmark functions for `Vec` data types: u8,u64,f64, in plain and mutable varieties
+**Version 1.0.0** Promoted to v 1.0.0 following period of non problematic use.

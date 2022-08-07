@@ -16,6 +16,37 @@ fn report(names:&[&str], meds:&[f64], stderrs:&[f64]) {
     }
 }
 
+/// Tests of listed `closures` that take no or constant arguments, named in `names`
+/// `repeats` runs of each closure.
+pub fn bench(
+    repeats:usize,
+    names:&[&str],
+    closures:&[fn()]) { 
+
+    let algno = names.len();
+    let mut timer = DevTime::new_simple();
+    println!("\n{YL}Nanoseconds of {BL}{}{YL} algorithms, {BL}{}{YL} repeats each:{UN}",algno,repeats); 
+        let mut meds = Vec::with_capacity(algno);
+        let mut stderrs = Vec::with_capacity(algno); 
+        let seed = get_seed(); // store the seed, whatever it is
+        for closure in closures {
+            // reintialise random numbers generator to the same seed for each closure
+            set_seeds(seed);
+            let mut times:Vec<f64> = Vec::with_capacity(repeats);    
+            for _ in 0..repeats {  
+                timer.start();
+                closure();
+                timer.stop();
+                let this_time = timer.time_in_nanos().unwrap() as f64;
+                times.push(this_time); 
+            };
+            let medmad = times.medstats();
+            meds.push(medmad.centre);
+            stderrs.push(100.0*medmad.dispersion/medmad.centre);
+        } 
+    report(names,&meds,&stderrs);
+}
+
 /// Tests of listed `closures`, named in `names`,
 /// on random data vectors of type specified by `rn` 
 /// and lengths of increasing `magnitudes` in multiples of 10, e.g. 10,100,1000  
