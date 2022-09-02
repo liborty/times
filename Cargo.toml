@@ -1,6 +1,6 @@
 [package]
 name = "times"
-version = "1.0.2"
+version = "1.0.3"
 authors = ["Libor Spacek"]
 edition = "2021"
 description = "Timing Benchmark, Repeated Runs, with Statistics"
