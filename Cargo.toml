@@ -12,7 +12,6 @@ keywords = ["statistics","median"]
 categories = ["development-tools","development-tools::profiling","rust-patterns","algorithms","science"]
 include = [
     "src/*.rs",
-    "tests/*.rs",
     "Cargo.toml",
     "README.md",
     "LICENSE"
@@ -21,7 +20,7 @@ include = [
 maintenance = { status = "actively-developed" }
 [lib]
 [dependencies]
-indxvec = "^1"
+indxvec = "1.4.2"
 ran = "^1"
-medians = "^1"
+medians = "1.0.4"
 devtimer = "^4"

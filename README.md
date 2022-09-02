@@ -55,9 +55,11 @@ The tests are also automatically repeated over different lengths of the input da
 
 ## Conclusion
 
-Please see `tests/test.rs` for examples of how to specify the closures and call these functions on them.
+Please see [`tests/test.rs`](https://github.com/liborty/times/blob/main/tests/tests.rs) for examples of how to specify the closures and call these functions on them.
 
 ## Appendix - Recent Releases
+
+**Version 1.0.3** Updated the dependencies.
 
 **Version 1.0.2** Added simple `bench` for timing closures that take no or constant arguments.
 
