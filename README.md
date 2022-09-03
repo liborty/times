@@ -24,7 +24,7 @@ Standard error `(ste)` estimates the doubt about the accuracy of any (repeated) 
 
 We generate new random data for each repeated run. The differences in `ste` between algorithms inform us about their relative stability under changing data. Some algorithms suffer from data sensitivity (poor worst-case performance) and this may be indicated by relatively high `ste`, e.g. `mutsort`.
 
-The tests are also automatically repeated over different lengths of the input data vectors, in steps of their *orders of magnitude*: 10,100,1000,10000, etc. This enables comparisons of algorithms as the difficulty of the problem increases. The algorithms with lower computational complexity and/or faster implementations will start to win more convincingly at greater magnitudes. A word of warning: it is not recommended to set the magnitudes range to more than 5, as it may take a very long time to run. Then the process may have to be externally terminated. Depending, of course, on the algorithms and the speed of the machine.
+The tests are also automatically repeated over different lengths of the input data vectors, in specified range and step. This enables comparisons of algorithms as the difficulty of the problem increases. The algorithms with lower computational complexity and/or faster implementations will start to win more convincingly at greater lengths. When the given range is too big, then the process may have to be externally terminated. Depending, of course, on the algorithms and the speed of the machine.
 
 ## Main Features
 
@@ -32,14 +32,14 @@ The tests are also automatically repeated over different lengths of the input da
 
 * Ease of Use - just specify:
   * the type of the random test data,
-  * the range of magnitudes of data vectors lengths,
-  * the number of repeats with different data,
-  * some labels/names to identify the algorithms by
+  * range of data vectors lengths, and step
+  * the number of repeats over different random data,
+  * some names to identify the algorithms by
   * the closures invoking the algorithms (in the same order as their labels).
 
 * Sorted output.
 
-    The algorithms are automatically sorted by their execution times within each magnitude of data category, i.e. the fastest algorithm in each data category will be listed first and the slowest last.
+    The algorithms are automatically sorted by their execution times within each length of data category, i.e. the fastest algorithm in each data category will be listed first and the slowest last.
 
 ## Provided Testing Functions
 
@@ -58,6 +58,8 @@ The tests are also automatically repeated over different lengths of the input da
 Please see [`tests/test.rs`](https://github.com/liborty/times/blob/main/tests/tests.rs) for examples of how to specify the closures and call these functions on them.
 
 ## Appendix - Recent Releases
+
+**Version 1.0.4** Instead of magnitudes number, now takes the actual range and step of the data lengths. Is more flexible.
 
 **Version 1.0.3** Updated the dependencies.
 
