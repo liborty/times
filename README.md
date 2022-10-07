@@ -4,6 +4,7 @@
 [<img alt="crates.io" src="https://img.shields.io/crates/v/times?logo=rust">](https://crates.io/crates/times)
 [<img alt="crates.io" src="https://img.shields.io/crates/d/times?logo=rust">](https://crates.io/crates/times)
 [<img alt="docs.rs" src="https://img.shields.io/docsrs/times?logo=rust">](https://docs.rs/times)
+[![Actions Status](https://github.com/liborty/times/workflows/compilation/badge.svg)](https://github.com/liborty/times/actions)
 
 ## Usage
 
