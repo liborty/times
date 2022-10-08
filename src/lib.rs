@@ -77,7 +77,7 @@ pub fn mutbenchu64(
             set_seeds(seed);
             let mut times: Vec<f64> = Vec::with_capacity(repeats);
             for _ in 0..repeats {
-                let mut data = rn.ranv(d).getvu64(); // different for each repeat
+                let mut data = rn.ranv(d).unwrap().getvu64().unwrap(); // different for each repeat
                 timer.start();
                 closure(&mut data);
                 timer.stop();
@@ -118,7 +118,7 @@ pub fn mutbenchf64(
             set_seeds(seed);
             let mut times: Vec<f64> = Vec::with_capacity(repeats);
             for _ in 0..repeats {
-                let mut data = rn.ranv(d).getvf64(); // different for each repeat
+                let mut data = rn.ranv(d).unwrap().getvf64().unwrap(); // different for each repeat
                 timer.start();
                 closure(&mut data);
                 timer.stop();
@@ -159,7 +159,7 @@ pub fn mutbenchu8(
             set_seeds(seed);
             let mut times: Vec<f64> = Vec::with_capacity(repeats);
             for _ in 0..repeats {
-                let mut data = rn.ranv(d).getvu8(); // different for each repeat
+                let mut data = rn.ranv(d).unwrap().getvu8().unwrap(); // different for each repeat
                 timer.start();
                 closure(&mut data);
                 timer.stop();
@@ -200,7 +200,7 @@ pub fn benchu64(
             set_seeds(seed);
             let mut times: Vec<f64> = Vec::with_capacity(repeats);
             for _ in 0..repeats {
-                let data = rn.ranv(d).getvu64(); // different for each repeat
+                let data = rn.ranv(d).unwrap().getvu64().unwrap(); // different for each repeat
                 timer.start();
                 closure(&data);
                 timer.stop();
@@ -241,7 +241,7 @@ pub fn benchf64(
             set_seeds(seed);
             let mut times: Vec<f64> = Vec::with_capacity(repeats);
             for _ in 0..repeats {
-                let data = rn.ranv(d).getvf64(); // different for each repeat
+                let data = rn.ranv(d).unwrap().getvf64().unwrap(); // different for each repeat
                 timer.start();
                 closure(&data);
                 timer.stop();
@@ -282,7 +282,7 @@ pub fn benchu8(
             set_seeds(seed);
             let mut times: Vec<f64> = Vec::with_capacity(repeats);
             for _ in 0..repeats {
-                let data = rn.ranv(d).getvu8(); // different for each repeat
+                let data = rn.ranv(d).unwrap().getvu8().unwrap(); // different for each repeat
                 timer.start();
                 closure(&data);
                 timer.stop();
@@ -324,7 +324,7 @@ pub fn benchvvu8(
             set_seeds(seed);
             let mut times: Vec<f64> = Vec::with_capacity(repeats);
             for _ in 0..repeats {
-                let data = rn.ranvv(d, points).getvvu8(); // different for each repeat
+                let data = rn.ranvv(d, points).unwrap().getvvu8().unwrap(); // different for each repeat
                 timer.start();
                 closure(&data);
                 timer.stop();
@@ -366,7 +366,7 @@ pub fn benchvvf64(
             set_seeds(seed);
             let mut times: Vec<f64> = Vec::with_capacity(repeats);
             for _ in 0..repeats {
-                let data = rn.ranvv(d, points).getvvf64(); // different for each repeat
+                let data = rn.ranvv(d, points).unwrap().getvvf64().unwrap(); // different for each repeat
                 timer.start();
                 closure(&data);
                 timer.stop();
@@ -408,7 +408,7 @@ pub fn benchvvu64(
             set_seeds(seed);
             let mut times: Vec<f64> = Vec::with_capacity(repeats);
             for _ in 0..repeats {
-                let data = rn.ranvv(d, points).getvvu64(); // different for each repeat
+                let data = rn.ranvv(d, points).unwrap().getvvu64().unwrap(); // different for each repeat
                 timer.start();
                 closure(&data);
                 timer.stop();

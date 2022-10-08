@@ -60,6 +60,8 @@ Please see [`tests/test.rs`](https://github.com/liborty/times/blob/main/tests/te
 
 ## Appendix - Recent Releases
 
+**Version 1.0.5** Updated dependency `ran` to `v.1.0.4`.
+
 **Version 1.0.4** Instead of magnitudes number, now takes the actual range and step of the data lengths. Is more flexible.
 
 **Version 1.0.3** Updated the dependencies.

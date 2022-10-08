@@ -45,11 +45,11 @@ fn rantest() {
     const NAMES:[&str;3] = [ "ranvvu8","ranvvu64","ranvvf64" ];
 
     const CLOSURES:[fn();3] = [
-        || { ranvvu8(D,N); }, 
-        || { ranvvu64(D,N); }, 
-        || { ranvvf64(D,N); } ];
+        || { ranvvu8(D,N).unwrap(); }, 
+        || { ranvvu64(D,N).unwrap(); }, 
+        || { ranvvf64(D,N).unwrap(); } ];
 
     set_seeds(7777777777_u64);   // intialise random numbers generator
     // Rnum encapsulates the type of the data items
-    bench(4,&NAMES,&CLOSURES); 
+    bench(4,&NAMES,&CLOSURES);
 }
