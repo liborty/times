@@ -4,7 +4,7 @@
 [<img alt="crates.io" src="https://img.shields.io/crates/v/times?logo=rust">](https://crates.io/crates/times)
 [<img alt="crates.io" src="https://img.shields.io/crates/d/times?logo=rust">](https://crates.io/crates/times)
 [<img alt="docs.rs" src="https://img.shields.io/docsrs/times?logo=rust">](https://docs.rs/times)
-[![Actions Status](https://github.com/liborty/times/workflows/compilation/badge.svg)](https://github.com/liborty/times/actions)
+[![Actions Status](https://github.com/liborty/times/workflows/test/badge.svg)](https://github.com/liborty/times/actions)
 
 ## Usage
 
@@ -60,7 +60,9 @@ Please see [`tests/test.rs`](https://github.com/liborty/times/blob/main/tests/te
 
 ## Appendix - Recent Releases
 
-**Version 1.0.5** Updated dependency `ran` to `v.1.0.4`.
+**Version 1.0.6** Updated dependency `medians` and github actions.
+
+**Version 1.0.5** Updated dependency `ran` to `v.1.0`.
 
 **Version 1.0.4** Instead of magnitudes number, now takes the actual range and step of the data lengths. Is more flexible.
 
