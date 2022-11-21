@@ -15,19 +15,19 @@ fn benchtests() {
 
     const CLOSURESU8:[fn(&mut[u8]);6] = [
     |v:&mut[_]| { v.sortm(true); }, 
-    |v:&mut[_]| { v.sorth(true); }, 
+    |v:&mut[_]| { v.sorth(&mut |t:&u8| *t as f64, true); }, 
     |v:&mut[_]| { v.mergesort_indexed(); },
-    |v:&mut[_]| { v.hashsort_indexed(); },
-    |v:&mut[_]| { v.muthashsort(); },
+    |v:&mut[_]| { v.hashsort_indexed(&mut |t:&u8| *t as f64); },
+    |v:&mut[_]| { v.muthashsort(&mut |t:&u8| *t as f64); },
     |v:&mut[_]| { v.mutquicksort(); } ];
 
 
     const CLOSURESF64:[fn(&mut[f64]);6] = [
     |v:&mut[_]| { v.sortm(true); }, 
-    |v:&mut[_]| { v.sorth(true); }, 
+    |v:&mut[_]| { v.sorth(&mut |t:&f64| *t, true); }, 
     |v:&mut[_]| { v.mergesort_indexed(); },
-    |v:&mut[_]| { v.hashsort_indexed(); },
-    |v:&mut[_]| { v.muthashsort(); },
+    |v:&mut[_]| { v.hashsort_indexed(&mut |t:&f64| *t); },
+    |v:&mut[_]| { v.muthashsort(&mut |t:&f64| *t); },
     |v:&mut[_]| { v.mutquicksort(); } ];
 
     set_seeds(7777777777_u64);   // intialise random numbers generator

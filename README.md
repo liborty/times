@@ -60,6 +60,8 @@ Please see [`tests/test.rs`](https://github.com/liborty/times/blob/main/tests/te
 
 ## Appendix - Recent Releases
 
+**Version 1.0.7** Updated dependency `medians` to v.2.0.0 and `indxvec`.
+
 **Version 1.0.6** Updated dependency `medians` and github actions.
 
 **Version 1.0.5** Updated dependency `ran` to `v.1.0`.
