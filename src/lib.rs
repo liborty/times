@@ -42,12 +42,56 @@ pub fn bench(repeats: usize, names: &[&str], closures: &[fn()]) {
             let this_time = timer.time_in_nanos().unwrap() as f64;
             times.push(this_time);
         }
-        let medmad = times.medstats(&mut |t:&f64| *t).expect("bench mestats");
+        let medmad = times.medstats(&mut |t: &f64| *t).expect("bench mestats");
         meds.push(medmad.centre);
         stderrs.push(100.0 * medmad.dispersion / medmad.centre);
     }
     report(names, &meds, &stderrs);
 }
+
+/// Tests of listed `closures`, named in `names`,
+/// on random data vectors of type specified by `rn`
+/// and lengths of increasing `magnitudes` in multiples of 10, e.g. 10,100,1000  
+/// `repeats` runs of each closure for each magnitude
+pub fn mutbenchu8(
+    rn: Rnum,
+    lengths: Range<usize>,
+    step: usize,
+    repeats: usize,
+    names: &[&str],
+    closures: &[fn(&mut [u8])],
+) {
+    let algno = names.len();
+    let mut timer = DevTime::new_simple();
+    println!("\n{YL}Nanoseconds for {BL}{}{YL} algorithms, {BL}&mut[u8]{YL} data, {BL}{}-{}{YL} lengths, {BL}{}{YL} step, {BL}{}{YL} repeats{UN}",
+        algno,lengths.start, lengths.end ,step, repeats );
+    for d in lengths.step_by(step) {
+        let mut meds = Vec::with_capacity(algno);
+        let mut stderrs = Vec::with_capacity(algno);
+        println!("\nLength: {BL}{}{UN}\n", d);
+        let seed = get_seed(); // store the seed, whatever it is
+        for closure in closures {
+            // reintialise random numbers generator to the same seed for each closure
+            set_seeds(seed);
+            let mut times: Vec<f64> = Vec::with_capacity(repeats);
+            for _ in 0..repeats {
+                let mut data = rn.ranv(d).unwrap().getvu8().unwrap(); // different for each repeat
+                timer.start();
+                closure(&mut data);
+                timer.stop();
+                let this_time = timer.time_in_nanos().unwrap() as f64;
+                times.push(this_time);
+            }
+            let medmad = times
+                .medstats(&mut |t: &f64| *t)
+                .expect("mutbenchu8 medstats");
+            meds.push(medmad.centre);
+            stderrs.push(100.0 * medmad.dispersion / medmad.centre);
+        }
+        report(names, &meds, &stderrs);
+    }
+}
+
 
 /// Tests of listed `closures`, named in `names`,
 /// on random data vectors of type specified by `rn`.  
@@ -61,8 +105,6 @@ pub fn mutbenchu64(
     names: &[&str],
     closures: &[fn(&mut [u64])],
 ) {
-    // concrete type here
-
     let algno = names.len();
     let mut timer = DevTime::new_simple();
     println!("\n{YL}Nanoseconds for {BL}{}{YL} algorithms, {BL}&mut[u64]{YL} data, {BL}{}-{}{YL} lengths, {BL}{}{YL} step, {BL}{}{YL} repeats{UN}",
@@ -84,7 +126,9 @@ pub fn mutbenchu64(
                 let this_time = timer.time_in_nanos().unwrap() as f64;
                 times.push(this_time);
             }
-            let medmad = times.medstats(&mut |t:&f64| *t).expect("mutbenchu64 medstats");
+            let medmad = times
+                .medstats(&mut |t: &f64| *t)
+                .expect("mutbenchu64 medstats");
             meds.push(medmad.centre);
             stderrs.push(100.0 * medmad.dispersion / medmad.centre);
         }
@@ -125,130 +169,9 @@ pub fn mutbenchf64(
                 let this_time = timer.time_in_nanos().unwrap() as f64;
                 times.push(this_time);
             }
-            let medmad = times.medstats(&mut |t:&f64| *t).expect("mutbenchf64 medstats");
-            meds.push(medmad.centre);
-            stderrs.push(100.0 * medmad.dispersion / medmad.centre);
-        }
-        report(names, &meds, &stderrs);
-    }
-}
-
-/// Tests of listed `closures`, named in `names`,
-/// on random data vectors of type specified by `rn`
-/// and lengths of increasing `magnitudes` in multiples of 10, e.g. 10,100,1000  
-/// `repeats` runs of each closure for each magnitude
-pub fn mutbenchu8(
-    rn: Rnum,
-    lengths: Range<usize>,
-    step: usize,
-    repeats: usize,
-    names: &[&str],
-    closures: &[fn(&mut [u8])],
-) {
-    let algno = names.len();
-    let mut timer = DevTime::new_simple();
-    println!("\n{YL}Nanoseconds for {BL}{}{YL} algorithms, {BL}&mut[u8]{YL} data, {BL}{}-{}{YL} lengths, {BL}{}{YL} step, {BL}{}{YL} repeats{UN}",
-        algno,lengths.start, lengths.end ,step, repeats );
-    for d in lengths.step_by(step) {
-        let mut meds = Vec::with_capacity(algno);
-        let mut stderrs = Vec::with_capacity(algno);
-        println!("\nLength: {BL}{}{UN}\n", d);
-        let seed = get_seed(); // store the seed, whatever it is
-        for closure in closures {
-            // reintialise random numbers generator to the same seed for each closure
-            set_seeds(seed);
-            let mut times: Vec<f64> = Vec::with_capacity(repeats);
-            for _ in 0..repeats {
-                let mut data = rn.ranv(d).unwrap().getvu8().unwrap(); // different for each repeat
-                timer.start();
-                closure(&mut data);
-                timer.stop();
-                let this_time = timer.time_in_nanos().unwrap() as f64;
-                times.push(this_time);
-            }
-            let medmad = times.medstats(&mut |t:&f64| *t).expect("mutbenchu8 medstats");
-            meds.push(medmad.centre);
-            stderrs.push(100.0 * medmad.dispersion / medmad.centre);
-        }
-        report(names, &meds, &stderrs);
-    }
-}
-
-/// Tests of listed `closures`, named in `names`,
-/// on random data vectors of type specified by `rn`
-/// and lengths of increasing `magnitudes` in multiples of 10, e.g. 10,100,1000  
-/// `repeats` runs of each closure for each magnitude
-pub fn benchu64(
-    rn: Rnum,
-    lengths: Range<usize>,
-    step: usize,
-    repeats: usize,
-    names: &[&str],
-    closures: &[fn(&[u64])],
-) {
-    let algno = names.len();
-    let mut timer = DevTime::new_simple();
-    println!("\n{YL}Nanoseconds for {BL}{}{YL} algorithms, {BL}&[u64]{YL} data, {BL}{}-{}{YL} lengths, {BL}{}{YL} step, {BL}{}{YL} repeats{UN}",
-       algno,lengths.start, lengths.end ,step, repeats );
-    for d in lengths.step_by(step) {
-        let mut meds = Vec::with_capacity(algno);
-        let mut stderrs = Vec::with_capacity(algno);
-        println!("\nLength: {BL}{}{UN}\n", d);
-        let seed = get_seed(); // store the seed, whatever it is
-        for closure in closures {
-            // reintialise random numbers generator to the same seed for each closure
-            set_seeds(seed);
-            let mut times: Vec<f64> = Vec::with_capacity(repeats);
-            for _ in 0..repeats {
-                let data = rn.ranv(d).unwrap().getvu64().unwrap(); // different for each repeat
-                timer.start();
-                closure(&data);
-                timer.stop();
-                let this_time = timer.time_in_nanos().unwrap() as f64;
-                times.push(this_time);
-            }
-            let medmad = times.medstats(&mut |t:&f64| *t).expect("benchu64 medstats");
-            meds.push(medmad.centre);
-            stderrs.push(100.0 * medmad.dispersion / medmad.centre);
-        }
-        report(names, &meds, &stderrs);
-    }
-}
-
-/// Tests of listed `closures`, named in `names`,
-/// on random data vectors of type specified by `rn`
-/// and lengths of increasing `magnitudes` in multiples of 10, e.g. 10,100,1000  
-/// `repeats` runs of each closure for each magnitude
-pub fn benchf64(
-    rn: Rnum,
-    lengths: Range<usize>,
-    step: usize,
-    repeats: usize,
-    names: &[&str],
-    closures: &[fn(&[f64])],
-) {
-    let algno = names.len();
-    let mut timer = DevTime::new_simple();
-    println!("\n{YL}Nanoseconds for {BL}{}{YL} algorithms, {BL}&[f64]{YL} data, {BL}{}-{}{YL} lengths, {BL}{}{YL} step, {BL}{}{YL} repeats{UN}",
-       algno,lengths.start, lengths.end ,step, repeats );
-    for d in lengths.step_by(step) {
-        let mut meds = Vec::with_capacity(algno);
-        let mut stderrs = Vec::with_capacity(algno);
-        println!("\nLength: {BL}{}{UN}\n", d);
-        let seed = get_seed(); // store the seed, whatever it is
-        for closure in closures {
-            // reintialise random numbers generator to the same seed for each closure
-            set_seeds(seed);
-            let mut times: Vec<f64> = Vec::with_capacity(repeats);
-            for _ in 0..repeats {
-                let data = rn.ranv(d).unwrap().getvf64().unwrap(); // different for each repeat
-                timer.start();
-                closure(&data);
-                timer.stop();
-                let this_time = timer.time_in_nanos().unwrap() as f64;
-                times.push(this_time);
-            }
-            let medmad = times.medstats(&mut |t:&f64| *t).expect("benchf64 medstats");
+            let medmad = times
+                .medstats(&mut |t: &f64| *t)
+                .expect("mutbenchf64 medstats");
             meds.push(medmad.centre);
             stderrs.push(100.0 * medmad.dispersion / medmad.centre);
         }
@@ -289,13 +212,141 @@ pub fn benchu8(
                 let this_time = timer.time_in_nanos().unwrap() as f64;
                 times.push(this_time);
             }
-            let medmad = times.medstats(&mut |t:&f64| *t).expect("benchu8 medstats");
+            let medmad = times.medstats(&mut |t: &f64| *t).expect("benchu8 medstats");
             meds.push(medmad.centre);
             stderrs.push(100.0 * medmad.dispersion / medmad.centre);
         }
         report(names, &meds, &stderrs);
     }
 }
+
+/// Tests of listed `closures`, named in `names`,
+/// on random data vectors of type specified by `rn`
+/// and lengths of increasing `magnitudes` in multiples of 10, e.g. 10,100,1000  
+/// `repeats` runs of each closure for each magnitude
+pub fn benchu16(
+    rn: Rnum,
+    lengths: Range<usize>,
+    step: usize,
+    repeats: usize,
+    names: &[&str],
+    closures: &[fn(&[u16])],
+) {
+    let algno = names.len();
+    let mut timer = DevTime::new_simple();
+    println!("\n{YL}Nanoseconds for {BL}{}{YL} algorithms, {BL}&[u8]{YL} data, {BL}{}-{}{YL} lengths, {BL}{}{YL} step, {BL}{}{YL} repeats{UN}",
+       algno,lengths.start, lengths.end ,step, repeats );
+    for d in lengths.step_by(step) {
+        let mut meds = Vec::with_capacity(algno);
+        let mut stderrs = Vec::with_capacity(algno);
+        println!("\nLength: {BL}{}{UN}\n", d);
+        let seed = get_seed(); // store the seed, whatever it is
+        for closure in closures {
+            // reintialise random numbers generator to the same seed for each closure
+            set_seeds(seed);
+            let mut times: Vec<f64> = Vec::with_capacity(repeats);
+            for _ in 0..repeats {
+                let data = rn.ranv(d).unwrap().getvu16().unwrap(); // different for each repeat
+                timer.start();
+                closure(&data);
+                timer.stop();
+                let this_time = timer.time_in_nanos().unwrap() as f64;
+                times.push(this_time);
+            }
+            let medmad = times.medstats(&mut |t: &f64| *t).expect("benchu8 medstats");
+            meds.push(medmad.centre);
+            stderrs.push(100.0 * medmad.dispersion / medmad.centre);
+        }
+        report(names, &meds, &stderrs);
+    }
+}
+
+/// Tests of listed `closures`, named in `names`,
+/// on random data vectors of type specified by `rn`
+/// and lengths of increasing `magnitudes` in multiples of 10, e.g. 10,100,1000  
+/// `repeats` runs of each closure for each magnitude
+pub fn benchu64(
+    rn: Rnum,
+    lengths: Range<usize>,
+    step: usize,
+    repeats: usize,
+    names: &[&str],
+    closures: &[fn(&[u64])],
+) {
+    let algno = names.len();
+    let mut timer = DevTime::new_simple();
+    println!("\n{YL}Nanoseconds for {BL}{}{YL} algorithms, {BL}&[u64]{YL} data, {BL}{}-{}{YL} lengths, {BL}{}{YL} step, {BL}{}{YL} repeats{UN}",
+       algno,lengths.start, lengths.end ,step, repeats );
+    for d in lengths.step_by(step) {
+        let mut meds = Vec::with_capacity(algno);
+        let mut stderrs = Vec::with_capacity(algno);
+        println!("\nLength: {BL}{}{UN}\n", d);
+        let seed = get_seed(); // store the seed, whatever it is
+        for closure in closures {
+            // reintialise random numbers generator to the same seed for each closure
+            set_seeds(seed);
+            let mut times: Vec<f64> = Vec::with_capacity(repeats);
+            for _ in 0..repeats {
+                let data = rn.ranv(d).unwrap().getvu64().unwrap(); // different for each repeat
+                timer.start();
+                closure(&data);
+                timer.stop();
+                let this_time = timer.time_in_nanos().unwrap() as f64;
+                times.push(this_time);
+            }
+            let medmad = times
+                .medstats(&mut |t: &f64| *t)
+                .expect("benchu64 medstats");
+            meds.push(medmad.centre);
+            stderrs.push(100.0 * medmad.dispersion / medmad.centre);
+        }
+        report(names, &meds, &stderrs);
+    }
+}
+
+/// Tests of listed `closures`, named in `names`,
+/// on random data vectors of type specified by `rn`
+/// and lengths of increasing `magnitudes` in multiples of 10, e.g. 10,100,1000  
+/// `repeats` runs of each closure for each magnitude
+pub fn benchf64(
+    rn: Rnum,
+    lengths: Range<usize>,
+    step: usize,
+    repeats: usize,
+    names: &[&str],
+    closures: &[fn(&[f64])],
+) {
+    let algno = names.len();
+    let mut timer = DevTime::new_simple();
+    println!("\n{YL}Nanoseconds for {BL}{}{YL} algorithms, {BL}&[f64]{YL} data, {BL}{}-{}{YL} lengths, {BL}{}{YL} step, {BL}{}{YL} repeats{UN}",
+       algno,lengths.start, lengths.end ,step, repeats );
+    for d in lengths.step_by(step) {
+        let mut meds = Vec::with_capacity(algno);
+        let mut stderrs = Vec::with_capacity(algno);
+        println!("\nLength: {BL}{}{UN}\n", d);
+        let seed = get_seed(); // store the seed, whatever it is
+        for closure in closures {
+            // reintialise random numbers generator to the same seed for each closure
+            set_seeds(seed);
+            let mut times: Vec<f64> = Vec::with_capacity(repeats);
+            for _ in 0..repeats {
+                let data = rn.ranv(d).unwrap().getvf64().unwrap(); // different for each repeat
+                timer.start();
+                closure(&data);
+                timer.stop();
+                let this_time = timer.time_in_nanos().unwrap() as f64;
+                times.push(this_time);
+            }
+            let medmad = times
+                .medstats(&mut |t: &f64| *t)
+                .expect("benchf64 medstats");
+            meds.push(medmad.centre);
+            stderrs.push(100.0 * medmad.dispersion / medmad.centre);
+        }
+        report(names, &meds, &stderrs);
+    }
+}
+
 
 /// Tests of listed `closures`, named in `names`,
 /// on random data vectors of type specified by `rn`
@@ -331,7 +382,9 @@ pub fn benchvvu8(
                 let this_time = timer.time_in_nanos().unwrap() as f64;
                 times.push(this_time);
             }
-            let medmad = times.medstats(&mut |t:&f64| *t).expect("benchvvu8 medstats");
+            let medmad = times
+                .medstats(&mut |t: &f64| *t)
+                .expect("benchvvu8 medstats");
             meds.push(medmad.centre);
             stderrs.push(100.0 * medmad.dispersion / medmad.centre);
         }
@@ -373,7 +426,9 @@ pub fn benchvvf64(
                 let this_time = timer.time_in_nanos().unwrap() as f64;
                 times.push(this_time);
             }
-            let medmad = times.medstats(&mut |t:&f64| *t).expect("benchvvf64 medstats");
+            let medmad = times
+                .medstats(&mut |t: &f64| *t)
+                .expect("benchvvf64 medstats");
             meds.push(medmad.centre);
             stderrs.push(100.0 * medmad.dispersion / medmad.centre);
         }
@@ -415,7 +470,9 @@ pub fn benchvvu64(
                 let this_time = timer.time_in_nanos().unwrap() as f64;
                 times.push(this_time);
             }
-            let medmad = times.medstats(&mut |t:&f64| *t).expect("benchvvu64 medstats");
+            let medmad = times
+                .medstats(&mut |t: &f64| *t)
+                .expect("benchvvu64 medstats");
             meds.push(medmad.centre);
             stderrs.push(100.0 * medmad.dispersion / medmad.centre);
         }
