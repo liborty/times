@@ -16,20 +16,26 @@ use times::*;
 
 This crate will be typically added in `Cargo.toml` under `[dev-dependecies]`  and then used by source files under `tests` or `benches` directories. It can be used whenever the runtime speed comparisons are of interest, which is practically always.
 
-`Times` is suitable for testing algorithms that work on a whole `Vec` of data, for example sort. Or even whole matrices of data `&[Vec<T>]`. The correctness of the results
-should be tested separately. Here the results are thrown away and only the execution time in nanoseconds is recorded.
+`Times` is suitable for testing algorithms that work on a whole `Vec` of data, for example sort. Or even whole matrices of data `&[Vec<T>]`.
 
-Random data are automatically generated using `ran` crate and then algorithms from a given array of closures are repeatedly run and their statistics are collected (median of the execution *times* and the measurements error). The repeated runs reduce the temporary effects of changing machine loads. The effects of outliers are minimised by using mad (median of absolute differences from median, which is the most stable measure of data spread). All the algorithms are run over the same data for exact comparisons but the data is changed for each repeat run.
+The correctness of the results
+should be tested separately. Here the results produced by the algorithms are thrown away and only the execution time in nanoseconds is recorded.
 
-The error estimates the doubt about the reliability of repeated measurements. High value means poor reliability. Relative accuracy can often be increased by increasing the number of repeats. The extraneous influence of the machine load is also reduced as the length of the data vectors increases.
+Random data are automatically generated using `ran` crate and then algorithms from a given array of closures are repeatedly run and their statistics are collected (median of the execution *times* and the measurements standard error). Repeated runs reduce the temporary effects of changing machine loads. The effects of outliers are minimised by using `mad` instead of standard deviation. Mad stand for median of absolute differences from median; it is the most stable measure of data spread.
 
-We generate new random data for each repeated run. The differences in errors between the algorithms inform us about their relative stability under changing data. Some algorithms suffer from data sensitivity (poor worst-case performance) and this may be indicated by relatively high errors, e.g. for `mutsort` (the standard Rust sort).
+All the algorithms are run over the same data for exact comparisons but the data is changed for each repeat run.
 
-The tests are also automatically repeated over different lengths of the input data vectors, in specified range and step. This enables comparisons of algorithms as the difficulty of the problem increases. The algorithms with lower computational complexity and/or faster implementations will start to win more convincingly at greater lengths. When the given range is too big, then the process may have to be externally terminated. Depending, of course, on the algorithms and the speed of the machine. It is recommended to use modest values at first.
+The error estimates the doubt about the reliability of repeated measurements. High value means poor reliability. Relative measurement accuracy can be often increased by increasing the number of repeats. The extraneous influence of the machine load is also reduced as the length of the data vectors increases.
+
+We generate new random data for each repeated run. The differences in errors between the algorithms inform us about their relative stability under changing data. Some algorithms suffer from data sensitivity (poor worst-case performance) and this may be indicated by relatively high errors, e.g. for `rust-sort` (the standard Rust sort).
+
+The tests are also automatically repeated over different lengths of the input data vectors, in specified range and step. This enables comparisons of algorithms as the difficulty of the problem increases. The algorithms with lower computational complexity and/or faster implementations will start to win more convincingly at greater lengths.
+
+When the data length becomes too large, then the process may have to be externally terminated. Depending, of course, on the algorithms and the speed of the machine. It is recommended to use modest values at first.
 
 ## Main Features
 
-* Mad, more stable standard error.
+* Mad, as more stable standard error.
 
 * Ease of Use - just specify:
   * the type of the random test data,
@@ -55,7 +61,7 @@ Four different and-types of data are fully supported: `u8,u16,u64,f64`. Other en
 A mutable version has to be used whenever any one of the tested algorithms mutates its input:
 `mutbenchu8, mutbenchu16, mutbenchu64 and mutbenchf64`.
 
-* Bench functions for algorithms taking nd data (matrices), e.g. &[Vec<f64>]: `benchvvu8, benchvvu16, benchvvu64 and benchvvf64`.
+* Bench functions for algorithms taking nd data (matrices), e.g. `&[Vec<f64>]`: `benchvvu8, benchvvu16, benchvvu64 and benchvvf64`.
 
 ## Conclusion
 
