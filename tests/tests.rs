@@ -5,9 +5,9 @@
 #![allow(dead_code)]
 #[cfg(test)]
 use indxvec::{ here, printing::*, Indices, Printing, Vecops, Mutops};
-use ran::{*,generators::{ranvvu8,ranvvu64,ranvvf64}};
+use ran::{*,generators::{ranvvu8,ranvvu16,ranvvu64,ranvvf64}};
 use std::convert::From;
-use times::{bench,mutbenchu8,mutbenchu64,mutbenchf64};
+use times::{bench,mutbenchu8,mutbenchu16,mutbenchu64,mutbenchf64};
 
 #[test]
 fn benchtests() {
@@ -21,6 +21,13 @@ fn benchtests() {
     |v:&mut[_]| { v.muthashsort(&mut |t:&u8| *t as f64); },
     |v:&mut[_]| { v.mutquicksort(); } ];
 
+    const CLOSURESU16:[fn(&mut[u16]);6] = [
+        |v:&mut[_]| { v.sortm(true); }, 
+        |v:&mut[_]| { v.sorth(&mut |t:&u16| *t as f64, true); }, 
+        |v:&mut[_]| { v.mergesort_indexed(); },
+        |v:&mut[_]| { v.hashsort_indexed(&mut |t:&u16| *t as f64); },
+        |v:&mut[_]| { v.muthashsort(&mut |t:&u16| *t as f64); },
+        |v:&mut[_]| { v.mutquicksort(); } ];
 
     const CLOSURESF64:[fn(&mut[f64]);6] = [
     |v:&mut[_]| { v.sortm(true); }, 
@@ -33,7 +40,8 @@ fn benchtests() {
     set_seeds(7777777777_u64);   // intialise random numbers generator
      // Rnum encapsulates the type of the data items
     mutbenchu8(Rnum::newu8(),5..10000,2000,10,&NAMES,&CLOSURESU8); 
-    mutbenchf64(Rnum::newf64(),50..10000,3000,10,&NAMES,&CLOSURESF64); 
+    mutbenchu16(Rnum::newu16(),5..10000,2000,10,&NAMES,&CLOSURESU16); 
+    mutbenchf64(Rnum::newf64(),50..10000,3000,20,&NAMES,&CLOSURESF64); 
 }
 
 #[test]
@@ -42,10 +50,11 @@ fn rantest() {
     const N:usize = 20;
     println!( "{GR}Generating {} sets of vectors of length {} each{UN}",N, D );
 
-    const NAMES:[&str;3] = [ "ranvvu8","ranvvu64","ranvvf64" ];
+    const NAMES:[&str;4] = [ "ranvvu8","ranvvu16","ranvvu64","ranvvf64" ];
 
-    const CLOSURES:[fn();3] = [
+    const CLOSURES:[fn();4] = [
         || { ranvvu8(D,N).unwrap(); }, 
+        || { ranvvu16(D,N).unwrap(); }, 
         || { ranvvu64(D,N).unwrap(); }, 
         || { ranvvf64(D,N).unwrap(); } ];
 
