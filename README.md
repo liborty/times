@@ -1,10 +1,8 @@
-# Times: Benchmark for Timing and Comparing Algorithms in Rust
+# Times [<img alt="crates.io" src="https://img.shields.io/crates/v/times?logo=rust">](https://crates.io/crates/times) [<img alt="GitHub last commit" src="https://img.shields.io/github/last-commit/liborty/times/HEAD?logo=github">](https://github.com/liborty/times)[![Actions Status](https://github.com/liborty/times/workflows/test/badge.svg)](https://github.com/liborty/times/actions)
 
-[<img alt="GitHub last commit" src="https://img.shields.io/github/last-commit/liborty/times/HEAD?logo=github">](https://github.com/liborty/times)
-[<img alt="crates.io" src="https://img.shields.io/crates/v/times?logo=rust">](https://crates.io/crates/times)
-[<img alt="crates.io" src="https://img.shields.io/crates/d/times?logo=rust">](https://crates.io/crates/times)
-[<img alt="docs.rs" src="https://img.shields.io/docsrs/times?logo=rust">](https://docs.rs/times)
-[![Actions Status](https://github.com/liborty/times/workflows/test/badge.svg)](https://github.com/liborty/times/actions)
+**Author: Libor Spacek**
+
+Benchmark for Timing and Comparing Algorithms in Rust 
 
 ## Usage
 
