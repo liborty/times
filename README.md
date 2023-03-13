@@ -67,6 +67,8 @@ Please see [`tests/test.rs`](https://github.com/liborty/times/blob/main/tests/te
 
 ## Appendix - Recent Releases
 
+**Version 1.0.10* Upped dependency `medians` to v.2.2.0.
+
 **Version 1.0.9** Added `mutbenchu16` and `benchvvu16`. Simplified the printouts.
 
 **Version 1.0.8** Added `benchu16`. Updated dependencies `medians` to ^2.1 and `indxvec` to ^1.4.

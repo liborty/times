@@ -3,7 +3,7 @@
 use core::ops::Range;
 use devtimer::DevTime;
 use indxvec::{printing::*, Indices, Vecops};
-use medians::Median;
+use medians::{Medianf64};
 use ran::{generators::get_seed, *};
 
 fn report(names: &[&str], meds: &[f64], stderrs: &[f64]) {
@@ -44,7 +44,7 @@ pub fn bench(repeats: usize, names: &[&str], closures: &[fn()]) {
             let this_time = timer.time_in_nanos().unwrap() as f64;
             times.push(this_time);
         }
-        let medmad = times.medstats(&mut |t: &f64| *t).expect("bench mestats");
+        let medmad = times.medstats().expect("bench mestats");
         meds.push(medmad.centre);
         stderrs.push(medmad.dispersion);
     }
@@ -84,7 +84,7 @@ pub fn mutbenchu8(
                 times.push(this_time);
             }
             let medmad = times
-                .medstats(&mut |t: &f64| *t)
+                .medstats()
                 .expect("mutbenchu8 medstats");
             meds.push(medmad.centre);
             stderrs.push(medmad.dispersion);
@@ -126,7 +126,7 @@ pub fn mutbenchu16(
                 times.push(this_time);
             }
             let medmad = times
-                .medstats(&mut |t: &f64| *t)
+                .medstats()
                 .expect("mutbenchu8 medstats");
             meds.push(medmad.centre);
             stderrs.push(medmad.dispersion);
@@ -168,7 +168,7 @@ pub fn mutbenchu64(
                 times.push(this_time);
             }
             let medmad = times
-                .medstats(&mut |t: &f64| *t)
+                .medstats()
                 .expect("mutbenchu64 medstats");
             meds.push(medmad.centre);
             stderrs.push(medmad.dispersion);
@@ -210,7 +210,7 @@ pub fn mutbenchf64(
                 times.push(this_time);
             }
             let medmad = times
-                .medstats(&mut |t: &f64| *t)
+                .medstats()
                 .expect("mutbenchf64 medstats");
             meds.push(medmad.centre);
             stderrs.push(medmad.dispersion);
@@ -251,7 +251,7 @@ pub fn benchu8(
                 let this_time = timer.time_in_nanos().unwrap() as f64;
                 times.push(this_time);
             }
-            let medmad = times.medstats(&mut |t: &f64| *t).expect("benchu8 medstats");
+            let medmad = times.medstats().expect("benchu8 medstats");
             meds.push(medmad.centre);
             stderrs.push(medmad.dispersion);
         }
@@ -291,7 +291,7 @@ pub fn benchu16(
                 let this_time = timer.time_in_nanos().unwrap() as f64;
                 times.push(this_time);
             }
-            let medmad = times.medstats(&mut |t: &f64| *t).expect("benchu8 medstats");
+            let medmad = times.medstats().expect("benchu8 medstats");
             meds.push(medmad.centre);
             stderrs.push(medmad.dispersion);
         }
@@ -332,7 +332,7 @@ pub fn benchu64(
                 times.push(this_time);
             }
             let medmad = times
-                .medstats(&mut |t: &f64| *t)
+                .medstats()
                 .expect("benchu64 medstats");
             meds.push(medmad.centre);
             stderrs.push(medmad.dispersion);
@@ -374,7 +374,7 @@ pub fn benchf64(
                 times.push(this_time);
             }
             let medmad = times
-                .medstats(&mut |t: &f64| *t)
+                .medstats()
                 .expect("benchf64 medstats");
             meds.push(medmad.centre);
             stderrs.push(medmad.dispersion);
@@ -417,7 +417,7 @@ pub fn benchvvu8(
                 times.push(this_time);
             }
             let medmad = times
-                .medstats(&mut |t: &f64| *t)
+                .medstats()
                 .expect("benchvvu8 medstats");
             meds.push(medmad.centre);
             stderrs.push(medmad.dispersion);
@@ -460,7 +460,7 @@ pub fn benchvvu16(
                 times.push(this_time);
             }
             let medmad = times
-                .medstats(&mut |t: &f64| *t)
+                .medstats()
                 .expect("benchvvu8 medstats");
             meds.push(medmad.centre);
             stderrs.push(medmad.dispersion);
@@ -503,7 +503,7 @@ pub fn benchvvf64(
                 times.push(this_time);
             }
             let medmad = times
-                .medstats(&mut |t: &f64| *t)
+                .medstats()
                 .expect("benchvvf64 medstats");
             meds.push(medmad.centre);
             stderrs.push(medmad.dispersion);
@@ -546,7 +546,7 @@ pub fn benchvvu64(
                 times.push(this_time);
             }
             let medmad = times
-                .medstats(&mut |t: &f64| *t)
+                .medstats()
                 .expect("benchvvu64 medstats");
             meds.push(medmad.centre);
             stderrs.push(medmad.dispersion);
