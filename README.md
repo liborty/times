@@ -67,7 +67,7 @@ Please see [`tests/test.rs`](https://github.com/liborty/times/blob/main/tests/te
 
 ## Appendix - Recent Releases
 
-**Version 1.0.10* Upped dependency `medians` to v.2.2.0.
+**Version 1.0.10** Upped dependency `medians` to v.2.2.0.
 
 **Version 1.0.9** Added `mutbenchu16` and `benchvvu16`. Simplified the printouts.
 
@@ -80,11 +80,3 @@ Please see [`tests/test.rs`](https://github.com/liborty/times/blob/main/tests/te
 **Version 1.0.5** Updated dependency `ran` to `v.1.0`.
 
 **Version 1.0.4** Instead of magnitudes number, now takes the actual range and step of the data lengths. Is more flexible.
-
-**Version 1.0.3** Updated the dependencies.
-
-**Version 1.0.2** Added simple `bench` for timing closures that take no or constant arguments.
-
-**Version 1.0.1** Redefined standard error as MAD as a percentage of Median (more stable measure). All listed times are now medians rather than means. Also, as there are now no sums of squares of nanoseconds, the danger of overflow on very slow tests is reduced.
-
-**Version 1.0.0** Promoted to v 1.0.0 following period of non problematic use.
