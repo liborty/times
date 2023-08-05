@@ -67,7 +67,7 @@ Please see [`tests/test.rs`](https://github.com/liborty/times/blob/main/tests/te
 
 ## Appendix - Recent Releases
 
-**Version 1.0.11** Upped dependency `indxvec` to 1.8.
+**Version 1.0.11** Upped dependency `indxvec` to 1.8, `medians` to 2.3.
 
 **Version 1.0.10** Upped dependency `medians` to 2.2.
 
@@ -79,6 +79,6 @@ Please see [`tests/test.rs`](https://github.com/liborty/times/blob/main/tests/te
 
 **Version 1.0.6** Updated dependency `medians` and github actions.
 
-**Version 1.0.5** Updated dependency `ran` to `v.1.0`.
+**Version 1.0.5** Updated dependency `ran` to `1.0`.
 
 **Version 1.0.4** Instead of magnitudes number, now takes the actual range and step of the data lengths. Is more flexible.
