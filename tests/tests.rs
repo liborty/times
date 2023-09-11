@@ -37,7 +37,7 @@ fn benchtests() {
     |v:&mut[_]| { v.muthashsort(|t:&f64| *t); },
     |v:&mut[_]| { v.mutquicksort(); } ];
 
-    set_seeds(7777777777_u64);   // intialise random numbers generator
+    set_seeds(0);   // intialise random numbers generator
      // Rnum encapsulates the type of the data items
     mutbenchu8(Rnum::newu8(),5..10000,2000,10,&NAMES,&CLOSURESU8); 
     mutbenchu16(Rnum::newu16(),5..10000,2000,10,&NAMES,&CLOSURESU16); 
@@ -48,7 +48,7 @@ fn benchtests() {
 fn rantest() {
     const D:usize = 10000;
     const N:usize = 20;
-    println!( "{GR}Generating {} sets of vectors of length {} each{UN}",N, D );
+    println!("\n{GR}Generating {} sets of vectors of length {} each{UN}",N, D );
 
     const NAMES:[&str;4] = [ "ranvvu8","ranvvu16","ranvvu64","ranvvf64" ];
 
@@ -58,7 +58,7 @@ fn rantest() {
         || { ranvvu64(D,N).unwrap(); }, 
         || { ranvvf64(D,N).unwrap(); } ];
 
-    set_seeds(7777777777_u64);   // intialise random numbers generator
+    set_seeds(0);   // intialise random numbers generator
     // Rnum encapsulates the type of the data items
-    bench(4,&NAMES,&CLOSURES);
+    bench(8,&NAMES,&CLOSURES);
 }

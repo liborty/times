@@ -3,7 +3,7 @@
 use core::ops::Range;
 use devtimer::DevTime;
 use indxvec::{printing::*, Indices, Vecops};
-use medians::{Medianf64};
+use medians::Medianf64;
 use ran::{generators::get_seed, *};
 
 fn report(names: &[&str], meds: &[f64], stderrs: &[f64]) {
@@ -29,7 +29,9 @@ fn heading(data:&str,c1:usize,c2:usize,step:usize,rows:usize,repeats:usize) {
 pub fn bench(repeats: usize, names: &[&str], closures: &[fn()]) {
     let algno = names.len();
     let mut timer = DevTime::new_simple();
-    heading("none",1,1,0,0,repeats);
+    println!(
+        "\n{YL}Input Data: {GR}none {YL}repeats: {GR}{repeats}{UN}"
+    );
     let mut meds = Vec::with_capacity(algno);
     let mut stderrs = Vec::with_capacity(algno);
     let seed = get_seed(); // store the seed, whatever it is
