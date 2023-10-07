@@ -68,6 +68,8 @@ Please see [`tests/test.rs`](https://github.com/liborty/times/blob/main/tests/te
 
 ## Appendix - Recent Releases
 
+**Version 1.0.12** Removed dependency on `devtimer`.
+
 **Version 1.0.11** Upped dependency `indxvec` to 1.8, `medians` to 2.3.
 
 **Version 1.0.10** Upped dependency `medians` to 2.2.

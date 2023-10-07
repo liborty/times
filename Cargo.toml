@@ -1,6 +1,6 @@
 [package]
 name = "times"
-version = "1.0.11"
+version = "1.0.12"
 authors = ["Libor Spacek"]
 edition = "2021"
 description = "Timing Benchmark, Repeated Runs, with Statistics"
@@ -23,4 +23,3 @@ maintenance = { status = "actively-developed" }
 indxvec = "1.8"
 ran = "1.1"
 medians = "2.3"
-devtimer = "4.0"

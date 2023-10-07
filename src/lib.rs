@@ -1,7 +1,8 @@
 #![warn(missing_docs)]
 //! Benchmark for timing algorithms
+
+use std::time::Instant;
 use core::ops::Range;
-use devtimer::DevTime;
 use indxvec::{printing::*, Indices, Vecops};
 use medians::Medianf64;
 use ran::{generators::get_seed, *};
@@ -27,8 +28,7 @@ fn heading(data:&str,c1:usize,c2:usize,step:usize,rows:usize,repeats:usize) {
 /// Tests of listed `closures` that take no or constant arguments, named in `names`
 /// `repeats` runs of each closure.
 pub fn bench(repeats: usize, names: &[&str], closures: &[fn()]) {
-    let algno = names.len();
-    let mut timer = DevTime::new_simple();
+    let algno = names.len(); 
     println!(
         "\n{YL}Input Data: {GR}none {YL}repeats: {GR}{repeats}{UN}"
     );
@@ -40,11 +40,9 @@ pub fn bench(repeats: usize, names: &[&str], closures: &[fn()]) {
         set_seeds(seed);
         let mut times: Vec<f64> = Vec::with_capacity(repeats);
         for _ in 0..repeats {
-            timer.start();
+            let now = Instant::now(); // = UNIX_EPOCH.elapsed().unwrap().as_nanos() as u64;timer.start();
             closure();
-            timer.stop();
-            let this_time = timer.time_in_nanos().unwrap() as f64;
-            times.push(this_time);
+            times.push(now.elapsed().as_nanos() as f64);
         }
         let medmad = times.medstats().expect("bench mestats");
         meds.push(medmad.centre);
@@ -65,8 +63,7 @@ pub fn mutbenchu8(
     names: &[&str],
     closures: &[fn(&mut [u8])],
 ) {
-    let algno = names.len();
-    let mut timer = DevTime::new_simple();
+    let algno = names.len(); 
     heading("&mut[u8]",lengths.start,lengths.end,step,1,repeats); 
     for d in lengths.step_by(step) {
         let mut meds = Vec::with_capacity(algno);
@@ -79,11 +76,9 @@ pub fn mutbenchu8(
             let mut times: Vec<f64> = Vec::with_capacity(repeats);
             for _ in 0..repeats {
                 let mut data = rn.ranv(d).unwrap().getvu8().unwrap(); // different for each repeat
-                timer.start();
+                let now = Instant::now();
                 closure(&mut data);
-                timer.stop();
-                let this_time = timer.time_in_nanos().unwrap() as f64;
-                times.push(this_time);
+                times.push(now.elapsed().as_nanos() as f64);
             }
             let medmad = times
                 .medstats()
@@ -108,7 +103,6 @@ pub fn mutbenchu16(
     closures: &[fn(&mut [u16])],
 ) {
     let algno = names.len();
-    let mut timer = DevTime::new_simple();
     heading("&mut[u16]",lengths.start,lengths.end,step,1,repeats); 
     for d in lengths.step_by(step) {
         let mut meds = Vec::with_capacity(algno);
@@ -116,16 +110,14 @@ pub fn mutbenchu16(
         println!("\nLength: {BL}{}{UN}\n", d);
         let seed = get_seed(); // store the seed, whatever it is
         for closure in closures {
+            let mut times: Vec<f64> = Vec::with_capacity(repeats);
             // reintialise random numbers generator to the same seed for each closure
             set_seeds(seed);
-            let mut times: Vec<f64> = Vec::with_capacity(repeats);
             for _ in 0..repeats {
                 let mut data = rn.ranv(d).unwrap().getvu16().unwrap(); // different for each repeat
-                timer.start();
+                let now = Instant::now();
                 closure(&mut data);
-                timer.stop();
-                let this_time = timer.time_in_nanos().unwrap() as f64;
-                times.push(this_time);
+                times.push(now.elapsed().as_nanos() as f64);
             }
             let medmad = times
                 .medstats()
@@ -150,7 +142,6 @@ pub fn mutbenchu64(
     closures: &[fn(&mut [u64])],
 ) {
     let algno = names.len();
-    let mut timer = DevTime::new_simple();
     heading("&mut[u64]",lengths.start,lengths.end,step,1,repeats); 
     for d in lengths.step_by(step) {
         let mut meds = Vec::with_capacity(algno);
@@ -163,11 +154,9 @@ pub fn mutbenchu64(
             let mut times: Vec<f64> = Vec::with_capacity(repeats);
             for _ in 0..repeats {
                 let mut data = rn.ranv(d).unwrap().getvu64().unwrap(); // different for each repeat
-                timer.start();
+                let now = Instant::now();
                 closure(&mut data);
-                timer.stop();
-                let this_time = timer.time_in_nanos().unwrap() as f64;
-                times.push(this_time);
+                times.push(now.elapsed().as_nanos() as f64);
             }
             let medmad = times
                 .medstats()
@@ -192,7 +181,6 @@ pub fn mutbenchf64(
     closures: &[fn(&mut [f64])],
 ) {
     let algno = names.len();
-    let mut timer = DevTime::new_simple();
     heading("&mut[f64]",lengths.start,lengths.end,step,1,repeats); 
     for d in lengths.step_by(step) {
         let mut meds = Vec::with_capacity(algno);
@@ -205,11 +193,9 @@ pub fn mutbenchf64(
             let mut times: Vec<f64> = Vec::with_capacity(repeats);
             for _ in 0..repeats {
                 let mut data = rn.ranv(d).unwrap().getvf64().unwrap(); // different for each repeat
-                timer.start();
+                let now = Instant::now();
                 closure(&mut data);
-                timer.stop();
-                let this_time = timer.time_in_nanos().unwrap() as f64;
-                times.push(this_time);
+                times.push(now.elapsed().as_nanos() as f64);
             }
             let medmad = times
                 .medstats()
@@ -234,7 +220,6 @@ pub fn benchu8(
     closures: &[fn(&[u8])],
 ) {
     let algno = names.len();
-    let mut timer = DevTime::new_simple();
     heading("&[u8]",lengths.start,lengths.end,step,1,repeats); 
     for d in lengths.step_by(step) {
         let mut meds = Vec::with_capacity(algno);
@@ -247,11 +232,9 @@ pub fn benchu8(
             let mut times: Vec<f64> = Vec::with_capacity(repeats);
             for _ in 0..repeats {
                 let data = rn.ranv(d).unwrap().getvu8().unwrap(); // different for each repeat
-                timer.start();
+                let now = Instant::now();
                 closure(&data);
-                timer.stop();
-                let this_time = timer.time_in_nanos().unwrap() as f64;
-                times.push(this_time);
+                times.push(now.elapsed().as_nanos() as f64); 
             }
             let medmad = times.medstats().expect("benchu8 medstats");
             meds.push(medmad.centre);
@@ -274,7 +257,6 @@ pub fn benchu16(
     closures: &[fn(&[u16])],
 ) {
     let algno = names.len();
-    let mut timer = DevTime::new_simple();
     heading("&[u16]",lengths.start,lengths.end,step,1,repeats); 
     for d in lengths.step_by(step) {
         let mut meds = Vec::with_capacity(algno);
@@ -287,11 +269,9 @@ pub fn benchu16(
             let mut times: Vec<f64> = Vec::with_capacity(repeats);
             for _ in 0..repeats {
                 let data = rn.ranv(d).unwrap().getvu16().unwrap(); // different for each repeat
-                timer.start();
+                let now = Instant::now();
                 closure(&data);
-                timer.stop();
-                let this_time = timer.time_in_nanos().unwrap() as f64;
-                times.push(this_time);
+                times.push(now.elapsed().as_nanos() as f64);
             }
             let medmad = times.medstats().expect("benchu8 medstats");
             meds.push(medmad.centre);
@@ -314,7 +294,6 @@ pub fn benchu64(
     closures: &[fn(&[u64])],
 ) {
     let algno = names.len();
-    let mut timer = DevTime::new_simple();
     heading("&[u64]",lengths.start,lengths.end,step,1,repeats);
     for d in lengths.step_by(step) {
         let mut meds = Vec::with_capacity(algno);
@@ -327,11 +306,9 @@ pub fn benchu64(
             let mut times: Vec<f64> = Vec::with_capacity(repeats);
             for _ in 0..repeats {
                 let data = rn.ranv(d).unwrap().getvu64().unwrap(); // different for each repeat
-                timer.start();
+                let now = Instant::now();
                 closure(&data);
-                timer.stop();
-                let this_time = timer.time_in_nanos().unwrap() as f64;
-                times.push(this_time);
+                times.push(now.elapsed().as_nanos() as f64);
             }
             let medmad = times
                 .medstats()
@@ -356,7 +333,6 @@ pub fn benchf64(
     closures: &[fn(&[f64])],
 ) {
     let algno = names.len();
-    let mut timer = DevTime::new_simple();
     heading("&[f64]",lengths.start,lengths.end,step,1,repeats);  
     for d in lengths.step_by(step) {
         let mut meds = Vec::with_capacity(algno);
@@ -369,11 +345,9 @@ pub fn benchf64(
             let mut times: Vec<f64> = Vec::with_capacity(repeats);
             for _ in 0..repeats {
                 let data = rn.ranv(d).unwrap().getvf64().unwrap(); // different for each repeat
-                timer.start();
+                let now = Instant::now();
                 closure(&data);
-                timer.stop();
-                let this_time = timer.time_in_nanos().unwrap() as f64;
-                times.push(this_time);
+                times.push(now.elapsed().as_nanos() as f64);
             }
             let medmad = times
                 .medstats()
@@ -399,7 +373,6 @@ pub fn benchvvu8(
     closures: &[fn(&[Vec<u8>])],
 ) {
     let algno = names.len();
-    let mut timer = DevTime::new_simple();
     heading("&[Vec<u8>]",lengths.start,lengths.end,step,points,repeats); 
     for d in lengths.step_by(step) {
         let mut meds = Vec::with_capacity(algno);
@@ -412,11 +385,9 @@ pub fn benchvvu8(
             let mut times: Vec<f64> = Vec::with_capacity(repeats);
             for _ in 0..repeats {
                 let data = rn.ranvv(d, points).unwrap().getvvu8().unwrap(); // different for each repeat
-                timer.start();
+                let now = Instant::now();
                 closure(&data);
-                timer.stop();
-                let this_time = timer.time_in_nanos().unwrap() as f64;
-                times.push(this_time);
+                times.push(now.elapsed().as_nanos() as f64);
             }
             let medmad = times
                 .medstats()
@@ -442,7 +413,6 @@ pub fn benchvvu16(
     closures: &[fn(&[Vec<u16>])],
 ) {
     let algno = names.len();
-    let mut timer = DevTime::new_simple();
     heading("&[Vec<u8>]",lengths.start,lengths.end,step,points,repeats); 
     for d in lengths.step_by(step) {
         let mut meds = Vec::with_capacity(algno);
@@ -455,11 +425,9 @@ pub fn benchvvu16(
             let mut times: Vec<f64> = Vec::with_capacity(repeats);
             for _ in 0..repeats {
                 let data = rn.ranvv(d, points).unwrap().getvvu16().unwrap(); // different for each repeat
-                timer.start();
+                let now = Instant::now();
                 closure(&data);
-                timer.stop();
-                let this_time = timer.time_in_nanos().unwrap() as f64;
-                times.push(this_time);
+                times.push(now.elapsed().as_nanos() as f64);
             }
             let medmad = times
                 .medstats()
@@ -485,7 +453,6 @@ pub fn benchvvf64(
     closures: &[fn(&[Vec<f64>])],
 ) {
     let algno = names.len();
-    let mut timer = DevTime::new_simple();
     heading("&[Vec<f64>]",lengths.start,lengths.end,step,points,repeats);  
     for d in lengths.step_by(step) {
         let mut meds = Vec::with_capacity(algno);
@@ -498,11 +465,9 @@ pub fn benchvvf64(
             let mut times: Vec<f64> = Vec::with_capacity(repeats);
             for _ in 0..repeats {
                 let data = rn.ranvv(d, points).unwrap().getvvf64().unwrap(); // different for each repeat
-                timer.start();
+                let now = Instant::now();
                 closure(&data);
-                timer.stop();
-                let this_time = timer.time_in_nanos().unwrap() as f64;
-                times.push(this_time);
+                times.push(now.elapsed().as_nanos() as f64);
             }
             let medmad = times
                 .medstats()
@@ -528,7 +493,6 @@ pub fn benchvvu64(
     closures: &[fn(&[Vec<u64>])],
 ) {
     let algno = names.len();
-    let mut timer = DevTime::new_simple();
     heading("&[Vec<u64>]",lengths.start,lengths.end,step,points,repeats); 
     for d in lengths.step_by(step) {
         let mut meds = Vec::with_capacity(algno);
@@ -541,11 +505,9 @@ pub fn benchvvu64(
             let mut times: Vec<f64> = Vec::with_capacity(repeats);
             for _ in 0..repeats {
                 let data = rn.ranvv(d, points).unwrap().getvvu64().unwrap(); // different for each repeat
-                timer.start();
+                let now = Instant::now();
                 closure(&data);
-                timer.stop();
-                let this_time = timer.time_in_nanos().unwrap() as f64;
-                times.push(this_time);
+                times.push(now.elapsed().as_nanos() as f64);
             }
             let medmad = times
                 .medstats()
