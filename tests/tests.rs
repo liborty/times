@@ -19,7 +19,7 @@ fn benchtests() {
     |v:&mut[_]| { v.mergesort_indexed(); },
     |v:&mut[_]| { v.hashsort_indexed(|t:&u8| *t as f64); },
     |v:&mut[_]| { v.muthashsort(|t:&u8| *t as f64); },
-    |v:&mut[_]| { v.mutquicksort(); } ];
+    |v:&mut[_]| { v.sort_unstable(); } ];
 
     const CLOSURESU16:[fn(&mut[u16]);6] = [
         |v:&mut[_]| { v.sortm(true); }, 
@@ -27,7 +27,7 @@ fn benchtests() {
         |v:&mut[_]| { v.mergesort_indexed(); },
         |v:&mut[_]| { v.hashsort_indexed(|t:&u16| *t as f64); },
         |v:&mut[_]| { v.muthashsort(|t:&u16| *t as f64); },
-        |v:&mut[_]| { v.mutquicksort(); } ];
+        |v:&mut[_]| { v.sort_unstable(); } ];
 
     const CLOSURESF64:[fn(&mut[f64]);6] = [
     |v:&mut[_]| { v.sortm(true); }, 
@@ -35,7 +35,7 @@ fn benchtests() {
     |v:&mut[_]| { v.mergesort_indexed(); },
     |v:&mut[_]| { v.hashsort_indexed(|t:&f64| *t); },
     |v:&mut[_]| { v.muthashsort(|t:&f64| *t); },
-    |v:&mut[_]| { v.mutquicksort(); } ];
+    |v:&mut[_]| { v.sort_unstable_by(|a,b| a.total_cmp(b)); } ];
 
     set_seeds(0);   // intialise random numbers generator
      // Rnum encapsulates the type of the data items
