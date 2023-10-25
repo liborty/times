@@ -11,31 +11,22 @@ use times::{bench,mutbenchu8,mutbenchu16,mutbenchu64,mutbenchf64};
 
 #[test]
 fn benchtests() {
-    const NAMES:[&str;6] = [ "merge-sort","hash-sort","mergesort_indexed","hashsort_indexed","muthashsort","rust-sort" ];
+    const NAMES:[&str;3] = [ "muthashsort","rust-sort","mutisort" ];
 
-    const CLOSURESU8:[fn(&mut[u8]);6] = [
-    |v:&mut[_]| { v.sortm(true); }, 
-    |v:&mut[_]| { v.sorth(|t:&u8| *t as f64, true); }, 
-    |v:&mut[_]| { v.mergesort_indexed(); },
-    |v:&mut[_]| { v.hashsort_indexed(|t:&u8| *t as f64); },
+    const CLOSURESU8:[fn(&mut[u8]);3] = [
     |v:&mut[_]| { v.muthashsort(|t:&u8| *t as f64); },
-    |v:&mut[_]| { v.sort_unstable(); } ];
+    |v:&mut[_]| { v.sort_unstable(); },
+    |v:&mut[_]| { v.mutisort(0..v.len(),|a,b| a.cmp(b)); } ];
 
-    const CLOSURESU16:[fn(&mut[u16]);6] = [
-        |v:&mut[_]| { v.sortm(true); }, 
-        |v:&mut[_]| { v.sorth(|t:&u16| *t as f64, true); }, 
-        |v:&mut[_]| { v.mergesort_indexed(); },
-        |v:&mut[_]| { v.hashsort_indexed(|t:&u16| *t as f64); },
+    const CLOSURESU16:[fn(&mut[u16]);3] = [
         |v:&mut[_]| { v.muthashsort(|t:&u16| *t as f64); },
-        |v:&mut[_]| { v.sort_unstable(); } ];
+        |v:&mut[_]| { v.sort_unstable(); },
+        |v:&mut[_]| { v.mutisort(0..v.len(),|a,b| a.cmp(b)); } ];
 
-    const CLOSURESF64:[fn(&mut[f64]);6] = [
-    |v:&mut[_]| { v.sortm(true); }, 
-    |v:&mut[_]| { v.sorth(|t:&f64| *t, true); }, 
-    |v:&mut[_]| { v.mergesort_indexed(); },
-    |v:&mut[_]| { v.hashsort_indexed(|t:&f64| *t); },
+    const CLOSURESF64:[fn(&mut[f64]);3] = [
     |v:&mut[_]| { v.muthashsort(|t:&f64| *t); },
-    |v:&mut[_]| { v.sort_unstable_by(|a,b| a.total_cmp(b)); } ];
+    |v:&mut[_]| { v.sort_unstable_by(|a,b| a.total_cmp(b)); },
+    |v:&mut[_]| { v.mutisort(0..v.len(),|a,b| a.total_cmp(b)); } ];
 
     set_seeds(0);   // intialise random numbers generator
      // Rnum encapsulates the type of the data items

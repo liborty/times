@@ -8,16 +8,19 @@ use medians::Medianf64;
 use ran::{generators::get_seed, *};
 
 fn report(names: &[&str], meds: &[f64], stderrs: &[f64]) {
-    let medsx = meds.mergesort_indexed();
+    let medsx = meds.isort_indexed(0..meds.len(),|a:&f64,b| a.total_cmp(b));
     let meds_sorted = medsx.unindex(meds, true);
     let names_sorted = medsx.unindex(names, true);
     let stderrs_sorted = medsx.unindex(stderrs, true);
     for i in 0..names.len() {
         println!(
-            "{MG}{:<18}{GR}{:>13.0} ± {:>7.0}{UN}",
-            names_sorted[i], meds_sorted[i], stderrs_sorted[i]
-        );
-    }
+            "{YL}{:<18}{GR}{:>13.0} ±{:>7.0} ~{:>5.2}%{YL} {:>7.4}{UN}",
+            names_sorted[i],
+            meds_sorted[i],
+            stderrs_sorted[i],
+            100.0*stderrs_sorted[i]/meds_sorted[i],
+            meds_sorted[i]/meds_sorted[0]);
+    };
 }
 fn heading(data:&str,c1:usize,c2:usize,step:usize,rows:usize,repeats:usize) {
     println!(
@@ -43,10 +46,10 @@ pub fn bench(repeats: usize, names: &[&str], closures: &[fn()]) {
             let now = Instant::now(); // = UNIX_EPOCH.elapsed().unwrap().as_nanos() as u64;timer.start();
             closure();
             times.push(now.elapsed().as_nanos() as f64);
-        }
-        let medmad = times.medstats().expect("bench mestats");
-        meds.push(medmad.centre);
-        stderrs.push(medmad.dispersion);
+        };
+        let med = times.medf_checked().expect("bench Nan detected");
+        meds.push(med);
+        stderrs.push(times.madf(med));
     }
     report(names, &meds, &stderrs);
 }
@@ -79,12 +82,10 @@ pub fn mutbenchu8(
                 let now = Instant::now();
                 closure(&mut data);
                 times.push(now.elapsed().as_nanos() as f64);
-            }
-            let medmad = times
-                .medstats()
-                .expect("mutbenchu8 medstats");
-            meds.push(medmad.centre);
-            stderrs.push(medmad.dispersion);
+            };
+            let med = times.medf_checked().expect("mutbenchu8 Nan detected");
+            meds.push(med);
+            stderrs.push(times.madf(med));
         }
         report(names, &meds, &stderrs);
     }
@@ -118,12 +119,10 @@ pub fn mutbenchu16(
                 let now = Instant::now();
                 closure(&mut data);
                 times.push(now.elapsed().as_nanos() as f64);
-            }
-            let medmad = times
-                .medstats()
-                .expect("mutbenchu8 medstats");
-            meds.push(medmad.centre);
-            stderrs.push(medmad.dispersion);
+            };
+            let med = times.medf_checked().expect("mutbenchu16 Nan detected");
+            meds.push(med);
+            stderrs.push(times.madf(med));
         }
         report(names, &meds, &stderrs);
     }
@@ -157,12 +156,10 @@ pub fn mutbenchu64(
                 let now = Instant::now();
                 closure(&mut data);
                 times.push(now.elapsed().as_nanos() as f64);
-            }
-            let medmad = times
-                .medstats()
-                .expect("mutbenchu64 medstats");
-            meds.push(medmad.centre);
-            stderrs.push(medmad.dispersion);
+            };
+            let med = times.medf_checked().expect("mutbenchu64 Nan detected");
+            meds.push(med);
+            stderrs.push(times.madf(med));
         }
         report(names, &meds, &stderrs);
     }
@@ -196,12 +193,10 @@ pub fn mutbenchf64(
                 let now = Instant::now();
                 closure(&mut data);
                 times.push(now.elapsed().as_nanos() as f64);
-            }
-            let medmad = times
-                .medstats()
-                .expect("mutbenchf64 medstats");
-            meds.push(medmad.centre);
-            stderrs.push(medmad.dispersion);
+            };
+            let med = times.medf_checked().expect("mutbenchf64 Nan detected");
+            meds.push(med);
+            stderrs.push(times.madf(med));
         }
         report(names, &meds, &stderrs);
     }
@@ -235,10 +230,10 @@ pub fn benchu8(
                 let now = Instant::now();
                 closure(&data);
                 times.push(now.elapsed().as_nanos() as f64); 
-            }
-            let medmad = times.medstats().expect("benchu8 medstats");
-            meds.push(medmad.centre);
-            stderrs.push(medmad.dispersion);
+            };
+            let med = times.medf_checked().expect("benchu8 Nan detected");
+            meds.push(med);
+            stderrs.push(times.madf(med)); 
         }
         report(names, &meds, &stderrs);
     }
@@ -272,10 +267,10 @@ pub fn benchu16(
                 let now = Instant::now();
                 closure(&data);
                 times.push(now.elapsed().as_nanos() as f64);
-            }
-            let medmad = times.medstats().expect("benchu8 medstats");
-            meds.push(medmad.centre);
-            stderrs.push(medmad.dispersion);
+            };
+            let med = times.medf_checked().expect("benchu16 Nan detected");
+            meds.push(med);
+            stderrs.push(times.madf(med));
         }
         report(names, &meds, &stderrs);
     }
@@ -309,13 +304,11 @@ pub fn benchu64(
                 let now = Instant::now();
                 closure(&data);
                 times.push(now.elapsed().as_nanos() as f64);
-            }
-            let medmad = times
-                .medstats()
-                .expect("benchu64 medstats");
-            meds.push(medmad.centre);
-            stderrs.push(medmad.dispersion);
-        }
+            };
+            let med = times.medf_checked().expect("benchu64 Nan detected");
+            meds.push(med);
+            stderrs.push(times.madf(med)); 
+        };
         report(names, &meds, &stderrs);
     }
 }
@@ -348,13 +341,11 @@ pub fn benchf64(
                 let now = Instant::now();
                 closure(&data);
                 times.push(now.elapsed().as_nanos() as f64);
-            }
-            let medmad = times
-                .medstats()
-                .expect("benchf64 medstats");
-            meds.push(medmad.centre);
-            stderrs.push(medmad.dispersion);
-        }
+            };
+            let med = times.medf_checked().expect("benchf64 Nan detected");
+            meds.push(med);
+            stderrs.push(times.madf(med));
+        };
         report(names, &meds, &stderrs);
     }
 }
@@ -388,13 +379,11 @@ pub fn benchvvu8(
                 let now = Instant::now();
                 closure(&data);
                 times.push(now.elapsed().as_nanos() as f64);
-            }
-            let medmad = times
-                .medstats()
-                .expect("benchvvu8 medstats");
-            meds.push(medmad.centre);
-            stderrs.push(medmad.dispersion);
-        }
+            };
+            let med = times.medf_checked().expect("benchvvu8 Nan detected");
+            meds.push(med);
+            stderrs.push(times.madf(med));
+        };
         report(names, &meds, &stderrs);
     }
 }
@@ -428,13 +417,11 @@ pub fn benchvvu16(
                 let now = Instant::now();
                 closure(&data);
                 times.push(now.elapsed().as_nanos() as f64);
-            }
-            let medmad = times
-                .medstats()
-                .expect("benchvvu8 medstats");
-            meds.push(medmad.centre);
-            stderrs.push(medmad.dispersion);
-        }
+            };
+            let med = times.medf_checked().expect("benchvvu16 Nan detected");
+            meds.push(med);
+            stderrs.push(times.madf(med));
+        };
         report(names, &meds, &stderrs);
     }
 }
@@ -468,13 +455,11 @@ pub fn benchvvf64(
                 let now = Instant::now();
                 closure(&data);
                 times.push(now.elapsed().as_nanos() as f64);
-            }
-            let medmad = times
-                .medstats()
-                .expect("benchvvf64 medstats");
-            meds.push(medmad.centre);
-            stderrs.push(medmad.dispersion);
-        }
+            };
+            let med = times.medf_checked().expect("benchvvf64 Nan detected");
+            meds.push(med);
+            stderrs.push(times.madf(med));
+        };
         report(names, &meds, &stderrs);
     }
 }
@@ -508,13 +493,11 @@ pub fn benchvvu64(
                 let now = Instant::now();
                 closure(&data);
                 times.push(now.elapsed().as_nanos() as f64);
-            }
-            let medmad = times
-                .medstats()
-                .expect("benchvvu64 medstats");
-            meds.push(medmad.centre);
-            stderrs.push(medmad.dispersion);
-        }
+            };
+            let med = times.medf_checked().expect("benchvvu64 Nan detected");
+            meds.push(med);
+            stderrs.push(times.madf(med));
+        };
         report(names, &meds, &stderrs);
     }
 }

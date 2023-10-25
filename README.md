@@ -13,20 +13,20 @@ use times::*;
 
 ## Introduction
 
-This crate will be typically added in `Cargo.toml` under `[dev-dependecies]`  and then used by source files under `tests` or `benches` directories. It can be used whenever the runtime speed comparisons are of interest, which is practically always.
+This crate will be typically added in `Cargo.toml` under `[dev-dependecies]`  and then used by source files in `tests` or `benches` directories. It can be used whenever the runtime speed comparisons are of interest, which is practically always.
 
 `Times` is suitable for testing algorithms that work on a whole `Vec` of data, for example sort. Or even whole matrices of data `&[Vec<T>]`.
 
 The correctness of the results
 should be tested separately. Here the results produced by the algorithms are thrown away and only the execution time in nanoseconds is recorded.
 
-Random data are automatically generated using `ran` crate and then algorithms from a given array of closures are repeatedly run and their statistics are collected (median of the execution *times* and the measurements standard error). Repeated runs reduce the temporary effects of changing machine loads. The effects of outliers are minimised by using `mad` instead of standard deviation. Mad stand for median of absolute differences from median; it is the most stable measure of data spread.
+Random data are automatically generated using `ran` crate and then algorithms from a given array of closures are repeatedly executed and their statistics are collected (median of the execution *times* and their spread (`mad`). Mad stand for median of absolute differences from median; it is the most stable measure of data spread. Repeated runs reduce the inevitable temporary effects of changing machine loads, cache utilisation, etc. The effects of outliers are minimised by using `mad` instead of standard deviation.
 
 All the algorithms are run over the same data for exact comparisons but the data is changed for each repeat run.
 
-The error estimates the doubt about the reliability of repeated measurements. High value means poor reliability. Relative measurement accuracy can be often increased by increasing the number of repeats. The extraneous influence of the machine load is also reduced as the length of the data vectors increases.
+The spread expresses the doubt about the reliability of repeated measurements. High value means poor reliability. Relative measurement inaccuracy (spread as percentage) can be often decreased by increasing the number of repeats. The extraneous influence of the machine load is also reduced as the length of the data vectors increases.
 
-We generate new random data for each repeated run. The differences in errors between the algorithms inform us about their relative stability under changing data. Some algorithms suffer from data sensitivity (poor worst-case performance) and this may be indicated by relatively high errors, e.g. for `rust-sort` (the standard Rust sort).
+We generate new random data for each repeated run. The differences in spreads between the algorithms inform us about their relative stability under changing data. Some algorithms suffer from data sensitivity (poor worst-case performance) and this may be indicated by relatively high spreads, e.g. for `rust-sort` (the standard Rust sort).
 
 The tests are also automatically repeated over different lengths of the input data vectors, in specified range and step. This enables comparisons of algorithms as the difficulty of the problem increases. The algorithms with lower computational complexity and/or faster implementations will start to win more convincingly at greater lengths.
 
@@ -34,7 +34,7 @@ When the data length becomes too large, then the process may have to be external
 
 ## Main Features
 
-* Mad, as more stable standard error.
+* Mad, as more stable measure of spread (measurement error).
 
 * Ease of Use - just specify:
   * the type of the random test data,
@@ -67,6 +67,8 @@ A mutable version has to be used whenever any one of the tested algorithms mutat
 Please see [`tests/test.rs`](https://github.com/liborty/times/blob/main/tests/tests.rs) for examples of how to specify the closures and call these functions on them.
 
 ## Appendix - Recent Releases
+
+**Version 1.0.14** Upgraded to Medians v 3.0.0, enabled checking for Nans, improved reports.
 
 **Version 1.0.13** Fixed some dependency problems in tests.
 
