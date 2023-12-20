@@ -5,7 +5,7 @@ use std::time::Instant;
 use core::ops::Range;
 use indxvec::{printing::*, Indices, Vecops};
 use medians::Medianf64;
-use ran::{generators::get_seed, *};
+use ran::*;
 
 fn report(names: &[&str], meds: &[f64], stderrs: &[f64]) {
     let medsx = meds.isort_indexed(0..meds.len(),|a:&f64,b| a.total_cmp(b));
@@ -59,7 +59,6 @@ pub fn bench(repeats: usize, names: &[&str], closures: &[fn()]) {
 /// and lengths of increasing `magnitudes` in multiples of 10, e.g. 10,100,1000  
 /// `repeats` runs of each closure for each magnitude
 pub fn mutbenchu8(
-    rn: Rnum,
     lengths: Range<usize>,
     step: usize,
     repeats: usize,
@@ -78,7 +77,7 @@ pub fn mutbenchu8(
             set_seeds(seed);
             let mut times: Vec<f64> = Vec::with_capacity(repeats);
             for _ in 0..repeats {
-                let mut data = rn.ranv(d).unwrap().getvu8().unwrap(); // different for each repeat
+                let mut data = ranv_u8(d).expect("ranv_u8 failed"); // different for each repeat
                 let now = Instant::now();
                 closure(&mut data);
                 times.push(now.elapsed().as_nanos() as f64);
@@ -96,7 +95,6 @@ pub fn mutbenchu8(
 /// and lengths of increasing `magnitudes` in multiples of 10, e.g. 10,100,1000  
 /// `repeats` runs of each closure for each magnitude
 pub fn mutbenchu16(
-    rn: Rnum,
     lengths: Range<usize>,
     step: usize,
     repeats: usize,
@@ -115,7 +113,7 @@ pub fn mutbenchu16(
             // reintialise random numbers generator to the same seed for each closure
             set_seeds(seed);
             for _ in 0..repeats {
-                let mut data = rn.ranv(d).unwrap().getvu16().unwrap(); // different for each repeat
+                let mut data = ranv_u16(d).expect("ranv_u16 failed"); // different for each repeat
                 let now = Instant::now();
                 closure(&mut data);
                 times.push(now.elapsed().as_nanos() as f64);
@@ -133,7 +131,6 @@ pub fn mutbenchu16(
 /// Lengths range is iterated over by step.  
 /// `repeats` runs of each closure for each length of data
 pub fn mutbenchu64(
-    rn: Rnum,
     lengths: Range<usize>,
     step: usize,
     repeats: usize,
@@ -152,7 +149,7 @@ pub fn mutbenchu64(
             set_seeds(seed);
             let mut times: Vec<f64> = Vec::with_capacity(repeats);
             for _ in 0..repeats {
-                let mut data = rn.ranv(d).unwrap().getvu64().unwrap(); // different for each repeat
+                let mut data = ranv_u64(d).expect("ranv_u64 failed"); // different for each repeat
                 let now = Instant::now();
                 closure(&mut data);
                 times.push(now.elapsed().as_nanos() as f64);
@@ -169,8 +166,7 @@ pub fn mutbenchu64(
 /// on random data vectors of type specified by `rn`
 /// and lengths of increasing `magnitudes` in multiples of 10, e.g. 10,100,1000  
 /// `repeats` runs of each closure for each magnitude
-pub fn mutbenchf64(
-    rn: Rnum,
+pub fn mutbenchf64( 
     lengths: Range<usize>,
     step: usize,
     repeats: usize,
@@ -189,7 +185,7 @@ pub fn mutbenchf64(
             set_seeds(seed);
             let mut times: Vec<f64> = Vec::with_capacity(repeats);
             for _ in 0..repeats {
-                let mut data = rn.ranv(d).unwrap().getvf64().unwrap(); // different for each repeat
+                let mut data = ranv_f64(d).expect("ranv_f64 failed"); // different for each repeat
                 let now = Instant::now();
                 closure(&mut data);
                 times.push(now.elapsed().as_nanos() as f64);
@@ -207,7 +203,6 @@ pub fn mutbenchf64(
 /// and lengths of increasing `magnitudes` in multiples of 10, e.g. 10,100,1000  
 /// `repeats` runs of each closure for each magnitude
 pub fn benchu8(
-    rn: Rnum,
     lengths: Range<usize>,
     step: usize,
     repeats: usize,
@@ -226,7 +221,7 @@ pub fn benchu8(
             set_seeds(seed);
             let mut times: Vec<f64> = Vec::with_capacity(repeats);
             for _ in 0..repeats {
-                let data = rn.ranv(d).unwrap().getvu8().unwrap(); // different for each repeat
+                let data = ranv_u8(d).expect("ranv_u8 failed"); // different for each repeat
                 let now = Instant::now();
                 closure(&data);
                 times.push(now.elapsed().as_nanos() as f64); 
@@ -243,8 +238,7 @@ pub fn benchu8(
 /// on random data vectors of type specified by `rn`
 /// and lengths of increasing `magnitudes` in multiples of 10, e.g. 10,100,1000  
 /// `repeats` runs of each closure for each magnitude
-pub fn benchu16(
-    rn: Rnum,
+pub fn benchu16( 
     lengths: Range<usize>,
     step: usize,
     repeats: usize,
@@ -263,7 +257,7 @@ pub fn benchu16(
             set_seeds(seed);
             let mut times: Vec<f64> = Vec::with_capacity(repeats);
             for _ in 0..repeats {
-                let data = rn.ranv(d).unwrap().getvu16().unwrap(); // different for each repeat
+                let data = ranv_u16(d).expect("ranv_u16 failed"); // different for each repeat
                 let now = Instant::now();
                 closure(&data);
                 times.push(now.elapsed().as_nanos() as f64);
@@ -281,7 +275,6 @@ pub fn benchu16(
 /// and lengths of increasing `magnitudes` in multiples of 10, e.g. 10,100,1000  
 /// `repeats` runs of each closure for each magnitude
 pub fn benchu64(
-    rn: Rnum,
     lengths: Range<usize>,
     step: usize,
     repeats: usize,
@@ -300,7 +293,7 @@ pub fn benchu64(
             set_seeds(seed);
             let mut times: Vec<f64> = Vec::with_capacity(repeats);
             for _ in 0..repeats {
-                let data = rn.ranv(d).unwrap().getvu64().unwrap(); // different for each repeat
+                let data = ranv_u64(d).expect("ranv_u64 failed"); // different for each repeat
                 let now = Instant::now();
                 closure(&data);
                 times.push(now.elapsed().as_nanos() as f64);
@@ -318,7 +311,6 @@ pub fn benchu64(
 /// and lengths of increasing `magnitudes` in multiples of 10, e.g. 10,100,1000  
 /// `repeats` runs of each closure for each magnitude
 pub fn benchf64(
-    rn: Rnum,
     lengths: Range<usize>,
     step: usize,
     repeats: usize,
@@ -337,7 +329,7 @@ pub fn benchf64(
             set_seeds(seed);
             let mut times: Vec<f64> = Vec::with_capacity(repeats);
             for _ in 0..repeats {
-                let data = rn.ranv(d).unwrap().getvf64().unwrap(); // different for each repeat
+                let data = ranv_f64(d).expect("ranv_f64 failed"); // different for each repeat
                 let now = Instant::now();
                 closure(&data);
                 times.push(now.elapsed().as_nanos() as f64);
@@ -355,7 +347,6 @@ pub fn benchf64(
 /// and lengths of increasing `magnitudes` in multiples of 10, e.g. 10,100,1000  
 /// `repeats` runs of each closure for each magnitude
 pub fn benchvvu8(
-    rn: Rnum,
     points: usize, // number of Vecs in each Vec<Vec<u8>>
     lengths: Range<usize>,
     step: usize,
@@ -375,7 +366,7 @@ pub fn benchvvu8(
             set_seeds(seed);
             let mut times: Vec<f64> = Vec::with_capacity(repeats);
             for _ in 0..repeats {
-                let data = rn.ranvv(d, points).unwrap().getvvu8().unwrap(); // different for each repeat
+                let data = ranvv_u8(points,d).expect("ranvv_u8 failed"); // different for each repeat
                 let now = Instant::now();
                 closure(&data);
                 times.push(now.elapsed().as_nanos() as f64);
@@ -393,7 +384,6 @@ pub fn benchvvu8(
 /// and lengths of increasing `magnitudes` in multiples of 10, e.g. 10,100,1000  
 /// `repeats` runs of each closure for each magnitude
 pub fn benchvvu16(
-    rn: Rnum,
     points: usize, // number of Vecs in each Vec<Vec<u8>>
     lengths: Range<usize>,
     step: usize,
@@ -413,7 +403,7 @@ pub fn benchvvu16(
             set_seeds(seed);
             let mut times: Vec<f64> = Vec::with_capacity(repeats);
             for _ in 0..repeats {
-                let data = rn.ranvv(d, points).unwrap().getvvu16().unwrap(); // different for each repeat
+                let data = ranvv_u16(points,d).expect("ranvv_u16 failed"); // different for each repeat
                 let now = Instant::now();
                 closure(&data);
                 times.push(now.elapsed().as_nanos() as f64);
@@ -430,8 +420,7 @@ pub fn benchvvu16(
 /// on random data vectors of type specified by `rn`
 /// and lengths of increasing `magnitudes` in multiples of 10, e.g. 10,100,1000  
 /// `repeats` runs of each closure for each magnitude
-pub fn benchvvf64(
-    rn: Rnum,
+pub fn benchvvf64( 
     points: usize, // number of Vecs in each Vec<Vec<u8>>
     lengths: Range<usize>,
     step: usize,
@@ -451,7 +440,7 @@ pub fn benchvvf64(
             set_seeds(seed);
             let mut times: Vec<f64> = Vec::with_capacity(repeats);
             for _ in 0..repeats {
-                let data = rn.ranvv(d, points).unwrap().getvvf64().unwrap(); // different for each repeat
+                let data = ranvv_f64(points,d).expect("ranvv_f64 failed"); // different for each repeat
                 let now = Instant::now();
                 closure(&data);
                 times.push(now.elapsed().as_nanos() as f64);
@@ -468,8 +457,7 @@ pub fn benchvvf64(
 /// on random data vectors of type specified by `rn`
 /// and lengths of increasing `magnitudes` in multiples of 10, e.g. 10,100,1000  
 /// `repeats` runs of each closure for each magnitude
-pub fn benchvvu64(
-    rn: Rnum,
+pub fn benchvvu64( 
     points: usize, // number of Vecs in each Vec<Vec<u64>>
     lengths: Range<usize>,
     step: usize,
@@ -489,7 +477,7 @@ pub fn benchvvu64(
             set_seeds(seed);
             let mut times: Vec<f64> = Vec::with_capacity(repeats);
             for _ in 0..repeats {
-                let data = rn.ranvv(d, points).unwrap().getvvu64().unwrap(); // different for each repeat
+                let data = ranvv_u64(points,d).expect("ranvv_u64 failed"); // different for each repeat
                 let now = Instant::now();
                 closure(&data);
                 times.push(now.elapsed().as_nanos() as f64);

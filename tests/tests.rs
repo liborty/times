@@ -5,7 +5,7 @@
 #![allow(dead_code)]
 #[cfg(test)]
 use indxvec::{ here, printing::*, Indices, Printing, Vecops, Mutops};
-use ran::{*,generators::{ranvvu8,ranvvu16,ranvvu64,ranvvf64}};
+use ran::*;
 use std::convert::From;
 use times::{bench,mutbenchu8,mutbenchu16,mutbenchu64,mutbenchf64};
 
@@ -30,9 +30,9 @@ fn benchtests() {
 
     set_seeds(0);   // intialise random numbers generator
      // Rnum encapsulates the type of the data items
-    mutbenchu8(Rnum::newu8(),5..10000,2000,10,&NAMES,&CLOSURESU8); 
-    mutbenchu16(Rnum::newu16(),5..10000,2000,10,&NAMES,&CLOSURESU16); 
-    mutbenchf64(Rnum::newf64(),50..10000,3000,20,&NAMES,&CLOSURESF64); 
+    mutbenchu8(5..10000,2000,10,&NAMES,&CLOSURESU8); 
+    mutbenchu16(5..10000,2000,10,&NAMES,&CLOSURESU16); 
+    mutbenchf64(50..10000,3000,20,&NAMES,&CLOSURESF64); 
 }
 
 #[test]
@@ -41,13 +41,13 @@ fn rantest() {
     const N:usize = 20;
     println!("\n{GR}Generating {} sets of vectors of length {} each{UN}",N, D );
 
-    const NAMES:[&str;4] = [ "ranvvu8","ranvvu16","ranvvu64","ranvvf64" ];
+    const NAMES:[&str;4] = [ "ranvv_u8","ranvv_u16","ranvv_u64","ranvv_f64" ];
 
     const CLOSURES:[fn();4] = [
-        || { ranvvu8(D,N).unwrap(); }, 
-        || { ranvvu16(D,N).unwrap(); }, 
-        || { ranvvu64(D,N).unwrap(); }, 
-        || { ranvvf64(D,N).unwrap(); } ];
+        || { ranvv_u8(N,D).unwrap(); }, 
+        || { ranvv_u16(N,D).unwrap(); }, 
+        || { ranvv_u64(N,D).unwrap(); }, 
+        || { ranvv_f64(N,D).unwrap(); } ];
 
     set_seeds(0);   // intialise random numbers generator
     // Rnum encapsulates the type of the data items

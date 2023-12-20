@@ -37,7 +37,6 @@ When the data length becomes too large, then the process may have to be external
 * Mad, as more stable measure of spread (measurement error).
 
 * Ease of Use - just specify:
-  * the type of the random test data,
   * range of data vectors lengths, and step
   * the number of repeats over different random data,
   * some names to identify the algorithms by
@@ -67,6 +66,8 @@ A mutable version has to be used whenever any one of the tested algorithms mutat
 Please see [`tests/test.rs`](https://github.com/liborty/times/blob/main/tests/tests.rs) for examples of how to specify the closures and call these functions on them.
 
 ## Appendix - Recent Releases
+
+**Version 1.0.15** Upgraded to Ran v 2.0.0
 
 **Version 1.0.14** Upgraded to Medians v 3.0.0, enabled checking for Nans, improved reports.
 
