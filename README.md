@@ -15,36 +15,34 @@ use times::*;
 
 This crate will be typically added in `Cargo.toml` under `[dev-dependecies]`  and then used by source files in `tests` or `benches` directories. It can be used whenever the runtime speed comparisons are of interest, which is practically always.
 
-`Times` is suitable for testing algorithms that work on a whole `Vec` of data, for example sort. Or even whole matrices of data `&[Vec<T>]`.
+`Times` is suitable for testing algorithms that work on a `Vec` of numerical data, for example sort. Also, whole matrices of data `&[Vec<T>]`.
 
 The correctness of the results
 should be tested separately. Here the results produced by the algorithms are thrown away and only the execution time in nanoseconds is recorded.
 
-Random data are automatically generated using `ran` crate and then algorithms from a given array of closures are repeatedly executed and their statistics are collected (median of the execution *times* and their spread (`mad`). Mad stand for median of absolute differences from median; it is the most stable measure of data spread. Repeated runs reduce the inevitable temporary effects of changing machine loads, cache utilisation, etc. The effects of outliers are minimised by using `mad` instead of standard deviation.
+Random data are automatically generated using `ran` crate and then all the algorithms from a given array of closures are executed over the same data. These runs are repeated a specified number of times, each time with new random data. The run times statistics are collected for each algorithm (median of the execution *times* and their spread (`mad`). Mad stands for median of absolute differences from median; it is the most stable measure of data spread. Repeated runs reduce the side effects of changing machine loads, cache utilisation, etc. The effects of outliers are reduced by using `mad` instead of standard deviation.
 
-All the algorithms are run over the same data for exact comparisons but the data is changed for each repeat run.
+`Mad` spread expresses doubt about the reliability of the measurements. High relative values mean poor reliability. Relative measurement inaccuracy (spread as a percentage) can be often reduced by increasing the number of repeats. The extraneous influence of the machine load can also be somewhat reduced by increasing the length of the data vectors.
 
-The spread expresses the doubt about the reliability of repeated measurements. High value means poor reliability. Relative measurement inaccuracy (spread as percentage) can be often decreased by increasing the number of repeats. The extraneous influence of the machine load is also reduced as the length of the data vectors increases.
+New random data is generated for each repeated run. The residual spread for each algorithm measures its stability under changing data. Some algorithms suffer from data sensitivity (poor worst-case performance) and this may be indicated by relatively high spreads, e.g. for `rust-sort` (the standard Rust sort).
 
-We generate new random data for each repeated run. The differences in spreads between the algorithms inform us about their relative stability under changing data. Some algorithms suffer from data sensitivity (poor worst-case performance) and this may be indicated by relatively high spreads, e.g. for `rust-sort` (the standard Rust sort).
+The tests are also automatically repeated over different lengths of the input data vectors, in specified range and step. This enables comparisons of algorithms as the difficulty of the problem increases. The algorithms with lower computational complexity and/or faster implementations will start to win more convincingly over greater data lengths.
 
-The tests are also automatically repeated over different lengths of the input data vectors, in specified range and step. This enables comparisons of algorithms as the difficulty of the problem increases. The algorithms with lower computational complexity and/or faster implementations will start to win more convincingly at greater lengths.
-
-When the data length becomes too large, then the process may have to be externally terminated. Depending, of course, on the algorithms and the speed of the machine. It is recommended to use modest values at first.
+When the data length becomes too large, then the process may have to be externally terminated. Depending, of course, on the algorithms and the speed of the machine. It is recommended to use modest range end value at first.
 
 ## Main Features
 
 * Mad, as more stable measure of spread (measurement error).
 
-* Ease of Use - just specify:
-  * range of data vectors lengths, and step
-  * the number of repeats over different random data,
-  * some names to identify the algorithms by
-  * the closures invoking the algorithms (in the same order as their labels).
+* Easy to use - just specify:
+  * range of data vectors lengths, and step,
+  * the number of repeat runs (with different random data) for each length,
+  * some names to identify the algorithms by on the pretty printout,
+  * the closures invoking the algorithms (in the same order as their names).
 
-* Sorted output.
+* Sorted output
 
-    The algorithms are automatically sorted by their execution times within each length of data category, i.e. the fastest algorithm in each data category will be listed first and the slowest last.
+    The algorithms are automatically sorted by their execution times within each length of data category, e.g. the fastest algorithm for each data length is listed first and the slowest last. The last (yellow) column lists their relative execution times, with the fastest being always 1.
 
 ## Provided Testing Functions
 
