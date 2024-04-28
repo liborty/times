@@ -2,8 +2,8 @@
 
 ## Author: Libor Spacek
 
-Benchmark for Timing and Comparing Algorithms in Rust.  
-Written in 100% safe Rust.
+Benchmarks for timing comparison of algorithms that take `$[T]` and `&[Vec<T>]` inputs and their mutable
+variants. Written in 100% safe Rust.
 
 ## Usage
 
@@ -59,7 +59,7 @@ Four different and-types of data are fully supported: `u8,u16,u64,f64`. Other en
 A mutable version has to be used whenever any one of the tested algorithms mutates its input:
 `mutbenchu8, mutbenchu16, mutbenchu64 and mutbenchf64`.
 
-* Bench functions for algorithms taking nd data (matrices), e.g. `&[Vec<f64>]`: `benchvvu8, benchvvu16, benchvvu64 and benchvvf64`.
+* Bench functions for algorithms taking `Vec<Vec<T>>` or `&[Vec<T>]` inputs: `benchvvu8, benchvvu16, benchvvu64 and benchvvf64`.
 
 ## Conclusion
 
