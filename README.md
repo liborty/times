@@ -64,7 +64,7 @@ Please see [`tests/test.rs`](https://github.com/liborty/times/blob/main/tests/te
 
 ## Appendix - Recent Releases
 
-**Version 1.0.15** Upgraded to Ran v 2.0.0
+**Version 1.0.15** Upgraded to Ran v 2.
 
 **Version 1.0.14** Upgraded to Medians v 3.0.0, enabled checking for Nans, improved reports.
 
