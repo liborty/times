@@ -46,16 +46,15 @@ When the data length becomes too large, then the process may have to be external
 
 ## Provided Testing Functions
 
-Four different and-types of data are fully supported: `u8,u16,u64,f64`. Other end-types may be added later. See `tests/tests.rs`.
+Four different end-types of data are fully supported: `u8,u16,u64,f64`. See `tests/tests.rs`.
 
-* Simple function `bench` for timing closures that take no or constant arguments.
+* Simple function `bench` for timing closures that take no or constant arguments
 
-* Bench functions for testing algorithms on input slices, e.g. on input data type `&[f64]`:
-`benchu8, benchu16, benchu64 and benchf64`.
+* Bench functions for testing algorithms on input slices, e.g. on input data types `&[T]`:
+`benchu8, benchu16, benchu64 and benchf64`
 
-* Bench functions for testing algorithms that mutate their input, e.g. data type: `&mut [f64]`.
-A mutable version has to be used whenever any one of the tested algorithms mutates its input:
-`mutbenchu8, mutbenchu16, mutbenchu64 and mutbenchf64`.
+* Bench functions for testing algorithms that mutate their input, e.g. data types `&mut [f64]`:
+`mutbenchu8, mutbenchu16, mutbenchu64 and mutbenchf64`. These mutable versions have to be used whenever any one of the tested algorithms mutates its input
 
 * Bench functions for algorithms taking `Vec<Vec<T>>` or `&[Vec<T>]` inputs: `benchvvu8, benchvvu16, benchvvu64 and benchvvf64`.
 
